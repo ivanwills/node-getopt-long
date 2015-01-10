@@ -10,8 +10,11 @@
     "dependencies": {
     },
     "devDependencies": {
+        "assert"     : "*",
         "gulp"       : "*",
-        "gulp-jshint": "*"
+        "gulp-mocha" : "*",
+        "gulp-jshint": "*",
+        "gulp-util"  : "*"
     },
     "optionalDependencies": {},
     "engines": {
