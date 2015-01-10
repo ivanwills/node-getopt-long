@@ -1,0 +1,20 @@
+{
+    "author"     : "Ivan Wills <ivan.wills@gmail.com>",
+    "name"       : "node-getopt-long",
+    "description": "Sofisticated command line parser",
+    "version"    : "0.0.1",
+    "repository" : {
+        "type": "git",
+        "url" : "git://github.com/ivanwills/node-getopt-long.git"
+    },
+    "dependencies": {
+    },
+    "devDependencies": {
+        "gulp"       : "*",
+        "gulp-jshint": "*"
+    },
+    "optionalDependencies": {},
+    "engines": {
+        "node": "*"
+    }
+}
