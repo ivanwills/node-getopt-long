@@ -1,7 +1,7 @@
 {
     "author"     : "Ivan Wills <ivan.wills@gmail.com>",
     "name"       : "node-getopt-long",
-    "description": "Sofisticated command line parser",
+    "description": "Sophisticated command line argument parser",
     "version"    : "0.0.1",
     "repository" : {
         "type": "git",
