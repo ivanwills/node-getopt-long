@@ -3,10 +3,15 @@
     "name"       : "node-getopt-long",
     "description": "Sophisticated command line argument parser",
     "version"    : "0.0.1",
+    "license"    : "GPL-3.0+",
+    "keywords"   : ["commandline", "argument", "passing"],
+    "bin"        : {},
+    "man"        : {},
     "repository" : {
         "type": "git",
         "url" : "git://github.com/ivanwills/node-getopt-long.git"
     },
+    "bugs":  "https://github.com/ivanwills/node-getopt-long/issues",
     "dependencies": {
     },
     "devDependencies": {
