@@ -1,5 +1,5 @@
 var assert = require('assert');
-var getoptLong = require('getopt-long');
+var getoptLong = require('../lib/getopt-long.js');
 
 describe('load', function() {
     it('works', function() {
