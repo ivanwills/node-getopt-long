@@ -1,8 +1,47 @@
 var assert = require('assert');
 var getoptLong = require('../lib/getopt-long.js');
 
-describe('load', function() {
-    it('works', function() {
-        assert.equal(1,1);
-    });
-});
+var test_data = [
+    {
+        'name': 'Simple',
+        'args': ['long|l', 'A long named option'],
+        'good': ['--long', '-l'],
+        'bad' : ['--log', '--q', '-q'],
+    }
+];
+
+for ( var i in test_data ) {
+    (function(data) {
+        describe(data.name, function() {
+            var opt;
+            beforeEach(function() {
+                opt = getoptLong.config(data.args);
+            });
+
+            for (var j in data.good) {
+                (function(test) {
+                    it(test, function() {
+                        opt.process(test.argv);
+                        assert.equal(opt[name], test.result);
+                    });
+                })(data.good[j]);
+            }
+
+            for (var k in data.bad) {
+                (function(test) {
+                    it(test, function() {
+                        var error;
+                        try {
+                            opt.process(test.argv);
+                        }
+                        catch (e) {
+                            error = e;
+                        }
+                        assert.true(!!error);
+                    });
+                })(data.bad[k]);
+            }
+
+        });
+    })(test_data[i]);
+}
