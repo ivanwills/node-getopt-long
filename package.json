@@ -7,6 +7,7 @@
     "keywords"   : ["commandline", "argument", "passing"],
     "bin"        : {},
     "man"        : {},
+    "main"       : "./lib/getopt-long.js",
     "repository" : {
         "type": "git",
         "url" : "git://github.com/ivanwills/node-getopt-long.git"
