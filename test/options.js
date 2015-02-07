@@ -1,4 +1,4 @@
-/* global require, describe, it, assert beforeEach */
+/* global require, describe, it, assert, beforeEach */
 var assert = require('assert');
 var getoptLong = require('../lib/getopt-long.js');
 console.log(getoptLong);
