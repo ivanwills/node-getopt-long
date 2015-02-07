@@ -1,8 +1,8 @@
 /* global require, describe, it, assert, beforeEach */
 
 var assert = require('assert');
-var param = require('../lib/getopt-long-param.js');
-console.log(param);
+var Param = require('../lib/getopt-long-param.js');
+console.log('Param : ', Param);
 
 var test_data = [
     {
@@ -20,14 +20,23 @@ for ( var i in test_data ) {
     (function(data) {
         describe(data.name, function() {
 
-            for (var j in data['this']) {
-                (function(test) {
-                    it('sets ' + test[0], function() {
-                        var opt = new param(data.args);
-                        console.log(opt, opt[test[0]], test[1]);
-                        assert.deepEqual(opt[test[0]], test[1], test[2]);
-                    });
-                })(data['this'][j]);
+            if (data['this']) {
+                for (var j in data['this']) {
+                    (function(test) {
+                        it('sets ' + test[0], function() {
+                            var param, error;
+                            try {
+                                param = new Param.param(data.args);
+                                error = false;
+                            }
+                            catch (e) {
+                                error = e;
+                            }
+                            assert(!error, 'No error creating new parameter');
+                            assert.deepEqual(param[test[0]], test[1], test[2]);
+                        });
+                    })(data['this'][j]);
+                }
             }
 
 //          for (var k in data.bad) {
@@ -35,7 +44,7 @@ for ( var i in test_data ) {
 //                  it(test, function() {
 //                        var error;
 //                        try {
-//                            opt.process(test.argv);
+//                            param.process(test.argv);
 //                        }
 //                        catch (e) {
 //                            error = e;
