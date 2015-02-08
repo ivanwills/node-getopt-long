@@ -13,6 +13,12 @@ var test_data = [
             [ 'possible', [ 'long', 'l' ] ],
             [ 'short',    [ 'l' ]         ]
         ],
+        'data': [
+            //[ '--test', false, null ],
+            //[ '--long', true , true ],
+            //[ '-l'    , true , true ],
+            [ '--log' , false, null ]
+        ]
     }
 ];
 
@@ -39,6 +45,30 @@ for ( var i in test_data ) {
                 }
             }
 
+          for (var k in data.data) {
+              (function(test) {
+                  it(test, function() {
+                        var param, match, error;
+                        try {
+                            param = new Param.param(data.args);
+                            console.log(param);
+                            match = param.process(test[0]);
+                            console.log(match);
+                            error = false;
+                        }
+                        catch (e) {
+                            error = e;
+                        }
+                            console.log('Error : ', error);
+                        assert(!error, 'No error creating new parameter');
+                            console.log('Matches? ', test[1], match, test[1] === match);
+                        assert.equal(test[1], match, 'Check that ' + test[0] + ' set ' + (test[1] ? 'matches' : 'does not match'));
+                            console.log('Value : ', test[2], param.value, test[2] === param.value);
+                        assert.equal(test[2], param.value, 'Check that ' + test[0] + ' set value to ' + test[2]);
+                  });
+              })(data.data[k]);
+          }
+
 //          for (var k in data.bad) {
 //              (function(test) {
 //                  it(test, function() {
@@ -53,7 +83,6 @@ for ( var i in test_data ) {
 //                  });
 //              })(data.bad[k]);
 //          }
-
         });
     })(test_data[i]);
 }
