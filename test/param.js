@@ -29,10 +29,11 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            [ '--test', false, null ],
-            [ '--long', true , true ],
-            [ '-l'    , true , true ],
-            [ '--log' , false, null ]
+            [ '--test'   , false, null  ],
+            [ '--no-long', true , false ],
+            [ '--long'   , true , true  ],
+            [ '-l'       , true , true  ],
+            [ '--log'    , false, null  ]
         ]
     }
 ];
