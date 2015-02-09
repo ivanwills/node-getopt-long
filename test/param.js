@@ -18,6 +18,22 @@ var test_data = [
             [ '-l'    , true , true ],
             [ '--log' , false, null ]
         ]
+    },
+    {
+        'name': 'Simple negatable parameter',
+        'args': ['long|l!', 'A long negatable named option'],
+        'this': [
+            [ 'name',      'long'          ],
+            [ 'negatable', true            ],
+            [ 'possible',  [ 'long', 'l' ] ],
+            [ 'short',     [ 'l' ]         ]
+        ],
+        'data': [
+            [ '--test', false, null ],
+            [ '--long', true , true ],
+            [ '-l'    , true , true ],
+            [ '--log' , false, null ]
+        ]
     }
 ];
 
