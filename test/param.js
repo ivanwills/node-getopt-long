@@ -35,6 +35,21 @@ var test_data = [
             [ '-l'       , true , true  ],
             [ '--log'    , false, null  ]
         ]
+    },
+    {
+        'name': 'Simple incrementer parameter',
+        'args': ['long|l+', 'A long negatable named option'],
+        'this': [
+            [ 'name',      'long'          ],
+            [ 'increment', true            ],
+            [ 'possible',  [ 'long', 'l' ] ],
+            [ 'short',     [ 'l' ]         ]
+        ],
+        'data': [
+            [ '--long'    , true , 1  ],
+            [ ['-l', '-l'], true , 2  ],
+            [ '--log'     , false, null  ]
+        ]
     }
 ];
 
@@ -67,7 +82,15 @@ for ( var i in test_data ) {
                         var param, match, error;
                         try {
                             param = new Param.param(data.args);
-                            match = param.process(test[0]);
+                            if (test[0] instanceof Array) {
+                                match = true;
+                                for (var x in test[0]) {
+                                    match = match && param.process(test[0][x]);
+                                }
+                            }
+                            else {
+                                match = param.process(test[0]);
+                            }
                             error = false;
                         }
                         catch (e) {
