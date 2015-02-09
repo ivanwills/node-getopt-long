@@ -2,7 +2,6 @@
 
 var assert = require('assert');
 var Param = require('../lib/getopt-long-param.js');
-console.log('Param : ', Param);
 
 var test_data = [
     {
@@ -14,9 +13,9 @@ var test_data = [
             [ 'short',    [ 'l' ]         ]
         ],
         'data': [
-            //[ '--test', false, null ],
-            //[ '--long', true , true ],
-            //[ '-l'    , true , true ],
+            [ '--test', false, null ],
+            [ '--long', true , true ],
+            [ '-l'    , true , true ],
             [ '--log' , false, null ]
         ]
     }
@@ -51,19 +50,14 @@ for ( var i in test_data ) {
                         var param, match, error;
                         try {
                             param = new Param.param(data.args);
-                            console.log(param);
                             match = param.process(test[0]);
-                            console.log(match);
                             error = false;
                         }
                         catch (e) {
                             error = e;
                         }
-                            console.log('Error : ', error);
                         assert(!error, 'No error creating new parameter');
-                            console.log('Matches? ', test[1], match, test[1] === match);
                         assert.equal(test[1], match, 'Check that ' + test[0] + ' set ' + (test[1] ? 'matches' : 'does not match'));
-                            console.log('Value : ', test[2], param.value, test[2] === param.value);
                         assert.equal(test[2], param.value, 'Check that ' + test[0] + ' set value to ' + test[2]);
                   });
               })(data.data[k]);
