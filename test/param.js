@@ -50,6 +50,20 @@ var test_data = [
             [ ['-l', '-l'], true , 2  ],
             [ '--log'     , false, null  ]
         ]
+    },
+    {
+        'name': 'Simple parameter with an argument ',
+        'args': ['long|l=', 'A long negatable named option'],
+        'this': [
+            [ 'name',      'long'          ],
+            [ 'parameter', true            ],
+            [ 'possible',  [ 'long', 'l' ] ],
+            [ 'short',     [ 'l' ]         ]
+        ],
+        'data': [
+            [ '--long=val', true , 'val'  ],
+            [ '-l'        , false, null   ]
+        ]
     }
 ];
 
@@ -78,7 +92,7 @@ for ( var i in test_data ) {
 
           for (var k in data.data) {
               (function(test) {
-                  it(test, function() {
+                  it('with parameter ' + test[0], function() {
                         var param, match, error;
                         try {
                             param = new Param.param(data.args);
