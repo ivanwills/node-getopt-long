@@ -78,7 +78,22 @@ var test_data = [
         ],
         'data': [
             [ '--long=val', true , 'val'  ],
-            [ '-l'        , false, null   ]
+            [ '-l'        , false, null, '--long requires a value\n' ]
+        ]
+    },
+    {
+        'name': 'Simple parameter with an int argument ',
+        'args': ['long|l=i', 'A long negatable named option'],
+        'this': [
+            [ 'name',      'long'          ],
+            [ 'parameter', true            ],
+            [ 'possible',  [ 'long', 'l' ] ],
+            [ 'short',     [ 'l' ]         ]
+        ],
+        'data': [
+            [ '--long=val', false, null, '--long must be an integer\n' ],
+            [ '--long=7'  , true , 7    ],
+            [ '-l'        , false, null, '--long requires a value\n' ]
         ]
     }
 ];
@@ -126,9 +141,16 @@ for ( var i in test_data ) {
                         catch (e) {
                             error = e;
                         }
-                        assert(!error, 'No error creating new parameter');
-                        assert.equal(test[1], match, 'Check that ' + test[0] + ' set ' + (test[1] ? 'matches' : 'does not match'));
-                        assert.equal(test[2], param.value, 'Check that ' + test[0] + ' set value to ' + test[2]);
+                        if (!test[3]) {
+                            if (test[2] != param.value) console.log(param, error, match, test);
+                            assert(!error, 'No error creating new parameter');
+                            assert.equal(test[1], match, 'Check that ' + test[0] + ' set ' + (test[1] ? 'matches' : 'does not match'));
+                            assert.equal(test[2], param.value, 'Check that ' + test[0] + ' set value to ' + test[2]);
+                        }
+                        else {
+                            if (test[3] != error) console.log(param, error, test);
+                            assert.equal(test[3], error, 'Check that ' + test[0] + ' throws and error');
+                        }
                   });
               })(data.data[k]);
           }
