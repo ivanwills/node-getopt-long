@@ -71,7 +71,21 @@ var test_data = [
     },
     {
         'name': 'Simple parameter with an argument ',
-        'args': ['long|l=', 'A long negatable named option'],
+        'args': ['long|l=', 'A long option with an argument'],
+        'this': [
+            [ 'name',      'long'          ],
+            [ 'parameter', true            ],
+            [ 'possible',  [ 'long', 'l' ] ],
+            [ 'short',     [ 'l' ]         ]
+        ],
+        'data': [
+            [ '--long=val', true , 'val'  ],
+            [ '-l'        , false, null, '--long requires a value\n' ]
+        ]
+    },
+    {
+        'name': 'Simple parameter with an argument ',
+        'args': ['long|l=s', 'A long option with a string argument'],
         'this': [
             [ 'name',      'long'          ],
             [ 'parameter', true            ],
@@ -85,7 +99,7 @@ var test_data = [
     },
     {
         'name': 'Simple parameter with an int argument ',
-        'args': ['long|l=i', 'A long negatable named option'],
+        'args': ['long|l=i', 'A long option with an integer'],
         'this': [
             [ 'name',      'long'          ],
             [ 'parameter', true            ],
@@ -95,6 +109,7 @@ var test_data = [
         'data': [
             [ '--long=val', false, null, '--long must be an integer\n' ],
             [ '--long=7'  , true , 7    ],
+            [ '--long=0'  , true , 0    ],
             [ '-l'        , false, null, '--long requires a value\n' ]
         ]
     }
