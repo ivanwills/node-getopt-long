@@ -14,10 +14,10 @@ var test_data = [
             [ 'short'      , [ 'l' ]               ]
         ],
         'data': [
-            [ '--test', false, null ],
-            [ '--long', true , true ],
-            [ '-l'    , true , true ],
-            [ '--log' , false, null ]
+            { arg: '--test', match: false, value: null },
+            { arg: '--long', match: true , value: true },
+            { arg: '-l'    , match: true , value: true },
+            { arg: '--log' , match: false, value: null }
         ]
     },
     {
@@ -30,11 +30,11 @@ var test_data = [
             [ 'short',       [ 'l' ]                    ]
         ],
         'data': [
-            [ '--test'   , false, null ],
-            [ '--long'   , true , true ],
-            [ '--my-long', true , true ],
-            [ '-l'       , true , true ],
-            [ '--log'    , false, null ]
+            { arg: '--test'   , match: false, value: null },
+            { arg: '--long'   , match: true , value: true },
+            { arg: '--my-long', match: true , value: true },
+            { arg: '-l'       , match: true , value: true },
+            { arg: '--log'    , match: false, value: null }
         ]
     },
     {
@@ -47,11 +47,11 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            [ '--test'   , false, null  ],
-            [ '--no-long', true , false ],
-            [ '--long'   , true , true  ],
-            [ '-l'       , true , true  ],
-            [ '--log'    , false, null  ]
+            { arg: '--test'   , match: false, value: null  },
+            { arg: '--no-long', match: true , value: false },
+            { arg: '--long'   , match: true , value: true  },
+            { arg: '-l'       , match: true , value: true  },
+            { arg: '--log'    , match: false, value: null  }
         ]
     },
     {
@@ -64,9 +64,9 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            [ '--long'    , true , 1  ],
-            [ ['-l', '-l'], true , 2  ],
-            [ '--log'     , false, null  ]
+            { arg: '--long'    , match: true , value: 1  },
+            { arg: ['-l', '-l'], match: true , value: 2  },
+            { arg: '--log'     , match: false, value: null  }
         ]
     },
     {
@@ -79,8 +79,8 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            [ '--long=val', true , 'val'  ],
-            [ '-l'        , false, null, '--long requires a value\n' ]
+            { arg: '--long=val', match: true , value: 'val'  },
+            { arg: '-l'        , match: false, value: null, error: '--long requires a value\n' }
         ]
     },
     {
@@ -93,8 +93,8 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            [ '--long=val', true , 'val'  ],
-            [ '-l'        , false, null, '--long requires a value\n' ]
+            { arg: '--long=val', match: true , value: 'val'  },
+            { arg: '-l'        , match: false, value: null, error: '--long requires a value\n' }
         ]
     },
     {
@@ -107,10 +107,10 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            [ '--long=val', false, null, '--long must be an integer\n' ],
-            [ '--long=7'  , true , 7    ],
-            [ '--long=0'  , true , 0    ],
-            [ '-l'        , false, null, '--long requires a value\n' ]
+            { arg: '--long=val', match: false, value: null, error: '--long must be an integer\n' },
+            { arg: '--long=7'  , match: true , value: 7    },
+            { arg: '--long=0'  , match: true , value: 0    },
+            { arg: '-l'        , match: false, value: null, error: '--long requires a value\n' }
         ]
     },
     {
@@ -123,11 +123,11 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            [ '--long=val'   , false, null, '--long must be an number\n' ],
-            [ '--long=7.1'   , true , 7.1  ],
-            [ '--long=0'     , true , 0    ],
-            [ ['--long', '0'], false, 0    ],
-            [ '-l'           , false, null, '--long requires a value\n' ]
+            { arg: '--long=val'   , match: false, value: null, error: '--long must be an number\n' },
+            { arg: '--long=7.1'   , match: true , value: 7.1  },
+            { arg: '--long=0'     , match: true , value: 0    },
+            { arg: ['--long', '0'], match: false, value: 0    },
+            { arg: '-l'           , match: false, value: null, error: '--long requires a value\n' }
         ]
     }
 ];
@@ -157,35 +157,48 @@ for ( var i in test_data ) {
 
         for (var k in data.data) {
             (function(test) {
-                var call = '"' + ( test[0] instanceof Array ? test[0].join(' ') : test[0] ) + '"';
+                var call = '"' + ( test.arg instanceof Array ? test.arg.join(' ') : test.arg ) + '"';
                 it('with parameter ' + call, function() {
                       var param, match, error;
                       try {
                           param = new Param.param(data.args);
-                          if (test[0] instanceof Array) {
+                          if (test.arg instanceof Array) {
                               match = true;
-                              while (test[0].length) {
-                                  match = match && param.process.apply(param, test[0]);
-                                  test[0].shift();
+                              while (test.arg.length) {
+                                  match = match && param.process.apply(param, test.arg);
+                                  test.arg.shift();
                               }
                           }
                           else {
-                              match = param.process(test[0]);
+                              match = param.process(test.arg);
                           }
                           error = false;
                       }
                       catch (e) {
                           error = e;
                       }
-                      if (!test[3]) {
-                          if (test[2] != param.value || error) console.log(param, error, match, test);
+                      if (!test.error) {
+                          if (test.value !== param.value || error) {
+                              console.log('Expect no errors\n', {
+                                  param: param,
+                                  error: error,
+                                  match: match,
+                                  test : test
+                              });
+                          }
                           assert(!error, 'No error creating new parameter');
-                          assert.equal(test[1], match, 'Check that ' + call + ' set ' + (test[1] ? 'matches' : 'does not match'));
-                          assert.equal(test[2], param.value, 'Check that ' + call + ' set value to ' + test[2]);
+                          assert.equal(test.match, match, 'Check that ' + call + ' set ' + (test.match ? 'matches' : 'does not match'));
+                          assert.equal(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
                       }
                       else {
-                          if (test[3] != error) console.log(param, error, test);
-                          assert.equal(test[3], error, 'Check that ' + call + ' throws and error');
+                          if (test.error !== error) {
+                              console.log('Expect errors\n', {
+                                  param: param,
+                                  error: error,
+                                  test : test
+                              });
+                          }
+                          assert.equal(test.error, error, 'Check that ' + call + ' throws and error');
                       }
                 });
             })(data.data[k]);
