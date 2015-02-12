@@ -22,11 +22,12 @@ var test_data = [
     },
     {
         'name': 'Simple parameter with more options',
-        'args': ['long|my-long|l', 'A long named option'],
+        'args': ['long|my-long|l', { description: 'A long named option' }],
         'this': [
-            [ 'name',     'long'          ],
-            [ 'possible', [ 'long', 'my-long', 'l' ] ],
-            [ 'short',    [ 'l' ]         ]
+            [ 'name',        'long'                     ],
+            [ 'possible',    [ 'long', 'my-long', 'l' ] ],
+            [ 'description', 'A long named option'      ],
+            [ 'short',       [ 'l' ]                    ]
         ],
         'data': [
             [ '--test'   , false, null ],
