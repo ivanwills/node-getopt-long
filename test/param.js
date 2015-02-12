@@ -6,7 +6,7 @@ var Param = require('../lib/getopt-long-param.js');
 var test_data = [
     {
         'name': 'Simple parameter',
-        'args': ['long|l', 'A long named option'],
+        'args': ['long|l', { description: 'A long named option' }],
         'this': [
             [ 'name'       , 'long'                ],
             [ 'possible'   , [ 'long', 'l' ]       ],
@@ -39,7 +39,7 @@ var test_data = [
     },
     {
         'name': 'Simple negatable parameter',
-        'args': ['long|l!', 'A long negatable named option'],
+        'args': ['long|l!', { description: 'A long negatable named option' }],
         'this': [
             [ 'name',      'long'          ],
             [ 'negatable', true            ],
@@ -56,7 +56,7 @@ var test_data = [
     },
     {
         'name': 'Simple incrementer parameter',
-        'args': ['long|l+', 'A long negatable named option'],
+        'args': ['long|l+', { description: 'A long negatable named option' }],
         'this': [
             [ 'name',      'long'          ],
             [ 'increment', true            ],
@@ -71,7 +71,7 @@ var test_data = [
     },
     {
         'name': 'Simple parameter with an argument ',
-        'args': ['long|l=', 'A long option with an argument'],
+        'args': ['long|l=', { description: 'A long option with an argument' }],
         'this': [
             [ 'name',      'long'          ],
             [ 'parameter', true            ],
@@ -85,7 +85,7 @@ var test_data = [
     },
     {
         'name': 'Simple parameter with an argument ',
-        'args': ['long|l=s', 'A long option with a string argument'],
+        'args': ['long|l=s', { description: 'A long option with a string argument' }],
         'this': [
             [ 'name',      'long'          ],
             [ 'parameter', true            ],
@@ -99,7 +99,7 @@ var test_data = [
     },
     {
         'name': 'Simple parameter with an int argument ',
-        'args': ['long|l=i', 'A long option with an integer'],
+        'args': ['long|l=i', { description: 'A long option with an integer' }],
         'this': [
             [ 'name',      'long'          ],
             [ 'parameter', true            ],
@@ -115,7 +115,7 @@ var test_data = [
     },
     {
         'name': 'Simple parameter with an float argument ',
-        'args': ['long|l=f', 'A long option with an float'],
+        'args': ['long|l=f', { description: 'A long option with an float' }],
         'this': [
             [ 'name',      'long'          ],
             [ 'parameter', true            ],
@@ -128,6 +128,25 @@ var test_data = [
             { arg: '--long=0'     , match: true , value: 0    },
             { arg: ['--long', '0'], match: false, value: 0    },
             { arg: '-l'           , match: false, value: null, error: '--long requires a value\n' }
+        ]
+    },
+    {
+        'name': 'Simple parameter with an int argument ',
+        'args': [
+            'long|l=i',
+            {
+                description: 'A long option with an integer',
+                test: function(val) { if (val < 0) throw '--long must be a positive integer\n'; return val; }
+            }
+        ],
+        'this': [
+            ['name', 'long'],
+        ],
+        'data': [
+            { arg: '--long=val', match: false, value: null, error: '--long must be an integer\n' },
+            { arg: '--long=7'  , match: true , value: 7    },
+            { arg: '--long=-7' , match: false, value: null, error: '--long must be a positive integer\n' },
+            { arg: '-l'        , match: false, value: null, error: '--long requires a value\n' }
         ]
     }
 ];
