@@ -112,6 +112,22 @@ var test_data = [
             [ '--long=0'  , true , 0    ],
             [ '-l'        , false, null, '--long requires a value\n' ]
         ]
+    },
+    {
+        'name': 'Simple parameter with an float argument ',
+        'args': ['long|l=f', 'A long option with an float'],
+        'this': [
+            [ 'name',      'long'          ],
+            [ 'parameter', true            ],
+            [ 'possible',  [ 'long', 'l' ] ],
+            [ 'short',     [ 'l' ]         ]
+        ],
+        'data': [
+            [ '--long=val', false, null, '--long must be an number\n' ],
+            [ '--long=7.1', true , 7.1  ],
+            [ '--long=0'  , true , 0    ],
+            [ '-l'        , false, null, '--long requires a value\n' ]
+        ]
     }
 ];
 
