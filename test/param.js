@@ -8,9 +8,10 @@ var test_data = [
         'name': 'Simple parameter',
         'args': ['long|l', 'A long named option'],
         'this': [
-            [ 'name',     'long'          ],
-            [ 'possible', [ 'long', 'l' ] ],
-            [ 'short',    [ 'l' ]         ]
+            [ 'name'       , 'long'                ],
+            [ 'possible'   , [ 'long', 'l' ]       ],
+            [ 'description', 'A long named option' ],
+            [ 'short'      , [ 'l' ]               ]
         ],
         'data': [
             [ '--test', false, null ],
