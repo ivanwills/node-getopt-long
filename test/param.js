@@ -123,10 +123,11 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            [ '--long=val', false, null, '--long must be an number\n' ],
-            [ '--long=7.1', true , 7.1  ],
-            [ '--long=0'  , true , 0    ],
-            [ '-l'        , false, null, '--long requires a value\n' ]
+            [ '--long=val'   , false, null, '--long must be an number\n' ],
+            [ '--long=7.1'   , true , 7.1  ],
+            [ '--long=0'     , true , 0    ],
+            [ ['--long', '0'], false, 0    ],
+            [ '-l'           , false, null, '--long requires a value\n' ]
         ]
     }
 ];
@@ -154,39 +155,41 @@ for ( var i in test_data ) {
                 }
             }
 
-          for (var k in data.data) {
-              (function(test) {
-                  it('with parameter ' + test[0], function() {
-                        var param, match, error;
-                        try {
-                            param = new Param.param(data.args);
-                            if (test[0] instanceof Array) {
-                                match = true;
-                                for (var x in test[0]) {
-                                    match = match && param.process(test[0][x]);
-                                }
-                            }
-                            else {
-                                match = param.process(test[0]);
-                            }
-                            error = false;
-                        }
-                        catch (e) {
-                            error = e;
-                        }
-                        if (!test[3]) {
-                            if (test[2] != param.value) console.log(param, error, match, test);
-                            assert(!error, 'No error creating new parameter');
-                            assert.equal(test[1], match, 'Check that ' + test[0] + ' set ' + (test[1] ? 'matches' : 'does not match'));
-                            assert.equal(test[2], param.value, 'Check that ' + test[0] + ' set value to ' + test[2]);
-                        }
-                        else {
-                            if (test[3] != error) console.log(param, error, test);
-                            assert.equal(test[3], error, 'Check that ' + test[0] + ' throws and error');
-                        }
-                  });
-              })(data.data[k]);
-          }
+        for (var k in data.data) {
+            (function(test) {
+                var call = '"' + ( test[0] instanceof Array ? test[0].join(' ') : test[0] ) + '"';
+                it('with parameter ' + call, function() {
+                      var param, match, error;
+                      try {
+                          param = new Param.param(data.args);
+                          if (test[0] instanceof Array) {
+                              match = true;
+                              while (test[0].length) {
+                                  match = match && param.process.apply(param, test[0]);
+                                  test[0].shift();
+                              }
+                          }
+                          else {
+                              match = param.process(test[0]);
+                          }
+                          error = false;
+                      }
+                      catch (e) {
+                          error = e;
+                      }
+                      if (!test[3]) {
+                          if (test[2] != param.value || error) console.log(param, error, match, test);
+                          assert(!error, 'No error creating new parameter');
+                          assert.equal(test[1], match, 'Check that ' + call + ' set ' + (test[1] ? 'matches' : 'does not match'));
+                          assert.equal(test[2], param.value, 'Check that ' + call + ' set value to ' + test[2]);
+                      }
+                      else {
+                          if (test[3] != error) console.log(param, error, test);
+                          assert.equal(test[3], error, 'Check that ' + call + ' throws and error');
+                      }
+                });
+            })(data.data[k]);
+        }
 
 //          for (var k in data.bad) {
 //              (function(test) {
