@@ -16,11 +16,12 @@
     "dependencies": {
     },
     "devDependencies": {
-        "assert"     : "*",
-        "gulp"       : "*",
-        "gulp-mocha" : "*",
-        "gulp-jshint": "*",
-        "gulp-util"  : "*"
+        "assert"        : "*",
+        "gulp"          : "*",
+        "gulp-mocha"    : "*",
+        "gulp-istanbul" : "*",
+        "gulp-jshint"   : "*",
+        "gulp-util"     : "*"
     },
     "optionalDependencies": {},
     "engines": {
