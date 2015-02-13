@@ -160,10 +160,11 @@ var test_data = [
             [ 'value',     [     ]         ]
         ],
         'data': [
-            { arg: '--long=val', match: false, value: null, error: '--long must be an integer\n' },
-            { arg: '--long=7'  , match: true , value: 7    },
-            { arg: '--long=0'  , match: true , value: 0    },
-            { arg: '-l'        , match: false, value: null, error: '--long requires a value\n' }
+            { arg: '--long=val'  , match: false, value: null, error: '--long must be an integer\n' },
+            { arg: '--long=7'    , match: true , value: [7]   },
+            { arg: '--long=0'    , match: true , value: [0]   },
+            { arg: ['--long=0', '--long=1'], match: true , value: [0,1] },
+            { arg: '-l'          , match: false, value: null, error: '--long requires a value\n' }
         ]
     }
 ];
@@ -224,7 +225,12 @@ for ( var i in test_data ) {
                           }
                           assert(!error, 'No error creating new parameter');
                           assert.equal(test.match, match, 'Check that ' + call + ' set ' + (test.match ? 'matches' : 'does not match'));
-                          assert.equal(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
+                          if ( typeof param.value === 'object' ) {
+                              assert.deepEqual(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
+                          }
+                          else {
+                              assert.equal(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
+                          }
                       }
                       else {
                           if (test.error !== error) {
