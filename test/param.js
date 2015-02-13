@@ -148,6 +148,23 @@ var test_data = [
             { arg: '--long=-7' , match: false, value: null, error: '--long must be a positive integer\n' },
             { arg: '-l'        , match: false, value: null, error: '--long requires a value\n' }
         ]
+    },
+    {
+        'name': 'Parameter with lots of ints',
+        'args': ['long|l=i@', { description: 'A long option with integers' }],
+        'this': [
+            [ 'name',      'long'          ],
+            [ 'parameter', true            ],
+            [ 'possible',  [ 'long', 'l' ] ],
+            [ 'short',     [ 'l' ]         ],
+            [ 'value',     [     ]         ]
+        ],
+        'data': [
+            { arg: '--long=val', match: false, value: null, error: '--long must be an integer\n' },
+            { arg: '--long=7'  , match: true , value: 7    },
+            { arg: '--long=0'  , match: true , value: 0    },
+            { arg: '-l'        , match: false, value: null, error: '--long requires a value\n' }
+        ]
     }
 ];
 
