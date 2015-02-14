@@ -168,6 +168,22 @@ var test_data = [
             { arg: '-l4'         , match: 1 , value: [4]   },
             { arg: '-l'          , match: false, value: null, error: '--long requires a value\n' }
         ]
+    },
+    {
+        'name': 'Parameter with named ints',
+        'args': ['long|l=i%', { description: 'A long option named integers' }],
+        'this': [
+            [ 'name'     , 'long'          ],
+            [ 'parameter', true            ],
+            [ 'object'   , true            ],
+            [ 'possible' , [ 'long', 'l' ] ],
+            [ 'short'    , [ 'l' ]         ],
+            [ 'value'    , {     }         ]
+        ],
+        'data': [
+            { arg: '--long=val'  , match: false, value: null, error: '--long must be an integer\n' },
+            { arg: '-l'          , match: false, value: null, error: '--long requires a value\n' }
+        ]
     }
 ];
 
