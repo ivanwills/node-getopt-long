@@ -163,8 +163,9 @@ var test_data = [
             { arg: '--long=val'  , match: false, value: null, error: '--long must be an integer\n' },
             { arg: '--long=7'    , match: true , value: [7]   },
             { arg: '--long=0'    , match: true , value: [0]   },
-            { arg: ['--long=0', '--long=1']    , match: true , value: [0,1] },
-            { arg: ['--long','9','--long','-1'], match: false, value: [9,-1] },
+            { arg: ['--long=0'   , '--long=1']    , match: true , value: [0,1] },
+            { arg: ['--long','9' , '--long','-1'], match: false, value: [9,-1] },
+            { arg: '-l4'         , match: 1 , value: [4]   },
             { arg: '-l'          , match: false, value: null, error: '--long requires a value\n' }
         ]
     }
@@ -216,7 +217,7 @@ for ( var i in test_data ) {
                           error = e;
                       }
                       if (!test.error) {
-                          if (error) {
+                          if (match != test.match || error) {
                               console.log('Expect no errors\n', {
                                   param: param,
                                   error: error,
