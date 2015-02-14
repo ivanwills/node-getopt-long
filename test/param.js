@@ -183,6 +183,9 @@ var test_data = [
         'data': [
             { arg: '--long=val'  , match: false, value: null, error: '--long must be an integer\n' },
             { arg: '--long=val=7', match: true , value: {val: 7}   },
+            { arg: '--long=val=0', match: true , value: {val: 0}   },
+            { arg: ['--long=first=0'  , '--long=second=1'   ], match: true , value: {first: 0, second: 1} },
+            { arg: ['--long','first=9', '--long','second=-1'], match: false, value: {first: 9, second:-1} },
             { arg: '-l'          , match: false, value: null, error: '--long requires a value\n' }
         ]
     }
