@@ -2,6 +2,7 @@ var gulp     = require('gulp');
 var mocha    = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var jshint   = require('gulp-jshint');
+var sonar    = require('gulp-sonar');
 var gutil    = require('gulp-util');
 
 gulp.task('lint', function() {
@@ -21,6 +22,38 @@ gulp.task('test', function(cb) {
                 .pipe(istanbul.writeReports())
                 .on('error', gutil.log);
         });
+});
+
+gulp.task('sonar', function () {
+    var options = {
+        sonar: {
+            host: {
+                url: 'http://localhost:9000'
+            },
+            jdbc: {
+                url: 'jdbc:mysql://localhost:3306/sonar',
+                username: 'sonar',
+                password: 'sonar'
+            },
+            projectKey: 'sonar:node-getopt-long:1.0.0',
+            projectName: 'My Project',
+            projectVersion: '1.0.0',
+            // comma-delimited string of source directories 
+            sources: 'lib',
+            language: 'js',
+            sourceEncoding: 'UTF-8',
+            javascript: {
+                lcov: {
+                    reportPath: 'coverage/locv.info'
+                }
+            }
+        }
+    };
+
+    // gulp source doesn't matter, all files are referenced in options object above 
+    return gulp.src('lib/getopt-long.js', { read: false })
+        .pipe(sonar(options))
+        .on('error', gutil.log);
 });
 
 gulp.task('watch', function() {

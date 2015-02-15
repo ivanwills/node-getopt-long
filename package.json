@@ -21,6 +21,7 @@
         "gulp-mocha"    : "*",
         "gulp-istanbul" : "*",
         "gulp-jshint"   : "*",
+        "gulp-sonar"    : "*",
         "gulp-util"     : "*"
     },
     "optionalDependencies": {},
