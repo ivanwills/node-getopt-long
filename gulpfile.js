@@ -6,7 +6,6 @@ var sonar    = require('gulp-sonar');
 var gutil    = require('gulp-util');
 
 gulp.task('lint', function() {
-    console.log('here');
     return gulp.src('./lib/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
