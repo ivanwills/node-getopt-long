@@ -9,8 +9,14 @@ var test_data = [
         'params': [
         ],
         'cmdline': [
-            { argv: ['--long'] },
-            { argv: ['-l'    ] }
+            {
+                name: 'passed long option',
+                argv: ['--long']
+            },
+            {
+                name: 'passed short option',
+                argv: ['-l'    ]
+            }
         ],
     }
 ];
@@ -20,7 +26,7 @@ for ( var i in test_data ) {
         describe(data.name, function() {
             for (var j in data.cmdline) {
                 (function(test) {
-                    it(test, function() {
+                    it(test.name, function() {
                         var error, opt;
                         try {
                             opt = getoptLong.configure(data.args);
@@ -28,13 +34,14 @@ for ( var i in test_data ) {
                         catch (e) {
                             error = e;
                         }
+                        console.log(opt);
                     });
                 })(data.cmdline[j]);
             }
 
             for (var k in data.params) {
                 (function(test) {
-                    it(test, function() {
+                    it(test.name, function() {
                         var error, opt;
                         try {
                             opt = getoptLong.configure(data.args);
@@ -51,3 +58,24 @@ for ( var i in test_data ) {
         });
     })(test_data[i]);
 }
+
+describe('Protections', function() {
+    beforeEach(function() {
+        Array.prototype.junk = true;
+    });
+    afterEach(function() {
+        delete Array.prototype.junk;
+    });
+    it('not own properties ignored', function() {
+        var error = false;
+        try {
+            var opt = getoptLong.configure([['log|l', 'long option']]);
+        }
+        catch (e) {
+            error = e;
+        }
+        console.log(error);
+        assert.equal(error, false, 'No error given when array has extra prototype property');
+    });
+});
+
