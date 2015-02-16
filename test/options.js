@@ -5,7 +5,23 @@ var getoptLong = require('../lib/getopt-long.js');
 var test_data = [
     {
         'name'  : 'Simple',
-        'args'  : ['long|l', 'A long named option'],
+        'args'  : [['long|l', 'A long named option']],
+        'params': [
+        ],
+        'cmdline': [
+            {
+                name: 'passed long option',
+                argv: ['--long']
+            },
+            {
+                name: 'passed short option',
+                argv: ['-l'    ]
+            }
+        ],
+    },
+    {
+        'name'  : 'Simple object',
+        'args'  : [['long|l', {description: 'A long named option'}]],
         'params': [
         ],
         'cmdline': [
@@ -27,14 +43,19 @@ for ( var i in test_data ) {
             for (var j in data.cmdline) {
                 (function(test) {
                     it(test.name, function() {
-                        var error, opt;
+                        var error, opt, result;
                         try {
                             opt = getoptLong.configure(data.args);
+                            result = opt.process();
+                            error = false;
                         }
                         catch (e) {
                             error = e;
                         }
-                        console.log(opt);
+                        if (error) {
+                            console.log('Error ', error, opt, result);
+                        }
+                        assert.equal(error, false, 'No error creating object');
                     });
                 })(data.cmdline[j]);
             }
