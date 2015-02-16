@@ -83,19 +83,20 @@ for ( var i in test_data ) {
 describe('Protections', function() {
     beforeEach(function() {
         Array.prototype.junk = true;
+        Object.prototype.junk = true;
     });
     afterEach(function() {
         delete Array.prototype.junk;
+        delete Object.prototype.junk;
     });
     it('not own properties ignored', function() {
         var error = false;
         try {
-            var opt = getoptLong.configure([['log|l', 'long option']]);
+            var opt = getoptLong.configure([['log|l', { description: 'long option' }]]);
         }
         catch (e) {
             error = e;
         }
-        console.log(error);
         assert.equal(error, false, 'No error given when array has extra prototype property');
     });
 });
