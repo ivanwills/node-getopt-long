@@ -77,6 +77,12 @@ var test_data = [
                 argv  : ['-vlv'],
                 extra : [],
                 params: { long: true, verbose: 2 }
+            },
+            {
+                name  : 'passed short option',
+                argv  : ['-vlv', '--', 'garbage', '--ignore'],
+                extra : ['garbage', '--ignore'],
+                params: { long: true, verbose: 2 }
             }
         ],
     }
