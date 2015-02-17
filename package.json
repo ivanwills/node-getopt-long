@@ -10,7 +10,7 @@
     "main"       : "./lib/getopt-long.js",
     "repository" : {
         "type": "git",
-        "url" : "git://github.com/ivanwills/node-getopt-long.git"
+        "url" : "https://github.com/ivanwills/node-getopt-long.git"
     },
     "bugs":  "https://github.com/ivanwills/node-getopt-long/issues",
     "dependencies": {
