@@ -58,6 +58,27 @@ var test_data = [
                 params: { long: true, int: 1 }
             }
         ],
+    },
+    {
+        'name'  : 'Object with value arguments',
+        'args'  : [
+            ['long|l', {description: 'A long named option'}],
+            ['verbose|v+', {description: 'A long named option'}],
+        ],
+        'cmdline': [
+            {
+                name  : 'passed short option',
+                argv  : ['-l', '-v', '-v'],
+                extra : [],
+                params: { long: true, verbose: 2 }
+            },
+            {
+                name  : 'passed short option',
+                argv  : ['-vlv'],
+                extra : [],
+                params: { long: true, verbose: 2 }
+            }
+        ],
     }
 ];
 
@@ -86,7 +107,7 @@ for ( var i in test_data ) {
                         }
                         assert.equal(error, false, 'No error creating object');
                         if (test.params) {
-                            assert.deepEqual(test.params, result, 'Get the expected params set');
+                            assert.deepEqual(test.params, result, 'Get the expected params set ('+JSON.stringify(test.params)+' vs '+JSON.stringify(result)+')');
                         }
                         if (test.extra) {
                             assert.deepEqual(test.extra, process.argv, 'Get the expected leftover arguments set');
