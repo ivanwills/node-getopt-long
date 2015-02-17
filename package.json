@@ -18,9 +18,9 @@
     "devDependencies": {
         "assert"        : "*",
         "gulp"          : "*",
-        "gulp-mocha"    : "*",
         "gulp-istanbul" : "*",
         "gulp-jshint"   : "*",
+        "gulp-mocha"    : "*",
         "gulp-sonar"    : "*",
         "gulp-util"     : "*"
     },
