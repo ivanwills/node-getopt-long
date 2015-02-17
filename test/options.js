@@ -137,7 +137,7 @@ for ( var i in test_data ) {
                     it(test.name, function() {
                         var error, opt;
                         try {
-                            opt = getoptLong.configure(data.args);
+                            opt = getoptLong.options(data.args);
                         }
                         catch (e) {
                            error = e;
@@ -164,7 +164,8 @@ describe('Protections', function() {
     it('not own properties ignored', function() {
         var error = false;
         try {
-            var opt = getoptLong.configure([['log|l', { description: 'long option' }]]);
+            var opt = new getoptLong.get;
+            opt.configure([['log|l', { description: 'long option' }]]);
             process.argv = ['node', 'test', '-l'];
             opt.process();
         }
