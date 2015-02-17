@@ -79,7 +79,12 @@ var test_data = [
                 params: { long: true, verbose: 2 }
             },
             {
-                name  : 'passed short option',
+                name  : 'Error on unknown arg',
+                argv  : ['-q'],
+                error : 'Unknown argument -q\n'
+            },
+            {
+                name  : 'terminate on --',
                 argv  : ['-vlv', '--', 'garbage', '--ignore'],
                 extra : ['garbage', '--ignore'],
                 params: { long: true, verbose: 2 }
@@ -108,10 +113,15 @@ for ( var i in test_data ) {
                         catch (e) {
                             error = e;
                         }
-                        if (error) {
+                        if (error && !test.error) {
                             console.log({error: error, opt: opt.parameters, params: result, argv: process.argv, test: test});
                         }
-                        assert.equal(error, false, 'No error creating object');
+                        if (test.error) {
+                            assert.equal(error, test.error, 'Get the expected error');
+                        }
+                        else {
+                            assert.equal(error, false, 'No error creating object');
+                        }
                         if (test.params) {
                             assert.deepEqual(test.params, result, 'Get the expected params set ('+JSON.stringify(test.params)+' vs '+JSON.stringify(result)+')');
                         }
