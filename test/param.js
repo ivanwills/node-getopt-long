@@ -189,6 +189,23 @@ var test_data = [
             { arg: ['--long','first=9', '--long','second=-1'], match: 4, value: {first: 9, second:-1} },
             { arg: '-l'                                      , match: 0, value: null, error: '--long requires a value\n' }
         ]
+    },
+    {
+        'name': 'Parameter with extra options',
+        'args': [
+            'long|l=i%',
+            {
+                test       : function(value) { if (value < 0) { throw 'No negatives\n'; } return value },
+                description: 'A long option named integers'
+            }
+        ],
+        'this': [
+            [ 'name', 'long' ]
+        ],
+        'data': [
+            { arg: '--long=val=7'                            , match: 1, value: {val: 7}              },
+            { arg: '--long=val=-1'                           , match: 0, error: 'No negatives\n'      },
+        ]
     }
 ];
 
