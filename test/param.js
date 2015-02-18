@@ -172,7 +172,7 @@ var test_data = [
     },
     {
         'name': 'Parameter with named ints',
-        'args': ['long|l=i%', { description: 'A long option named integers' }],
+        'args': ['long|l=i%', { description: 'A long option named integers', test: [1,2] }],
         'this': [
             [ 'name'     , 'long'          ],
             [ 'parameter', true            ],
@@ -203,8 +203,25 @@ var test_data = [
             [ 'name', 'long' ]
         ],
         'data': [
-            { arg: '--long=val=7'                            , match: 1, value: {val: 7}              },
-            { arg: '--long=val=-1'                           , match: 0, error: 'No negatives\n'      },
+            { arg: '--long=val=7' , match: 1, value: {val: 7}         },
+            { arg: '--long=val=-1', match: 0, error: 'No negatives\n' },
+        ]
+    },
+    {
+        'name': 'Parameter with key test',
+        'args': [
+            'long|l=i%',
+            {
+                test       : function(value, key) { if (key === 'thing') { throw 'No things\n'; } return value },
+                description: 'A long option named integers'
+            }
+        ],
+        'this': [
+            [ 'name', 'long' ]
+        ],
+        'data': [
+            { arg: '--long=val=7'   , match: 1, value: {val: 7}      },
+            { arg: '--long=thing=-1', match: 0, error: 'No things\n' },
         ]
     }
 ];
