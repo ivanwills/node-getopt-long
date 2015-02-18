@@ -204,7 +204,7 @@ var test_data = [
         ],
         'data': [
             { arg: '--long=val=7' , match: 1, value: {val: 7}         },
-            { arg: '--long=val=-1', match: 0, error: 'No negatives\n' },
+            { arg: '--long=val=-1', match: 0, error: 'No negatives\n' }
         ]
     },
     {
@@ -221,7 +221,7 @@ var test_data = [
         ],
         'data': [
             { arg: '--long=val=7'   , match: 1, value: {val: 7}      },
-            { arg: '--long=thing=-1', match: 0, error: 'No things\n' },
+            { arg: '--long=thing=-1', match: 0, error: 'No things\n' }
         ]
     }
 ];
@@ -312,3 +312,20 @@ for ( var i in test_data ) {
         });
     })(test_data[i]);
 }
+
+describe('Argument events', function() {
+    it('are called', function() {
+        var flag;
+        try {
+        var param = new Param.param([
+            'long|l=i',
+            {
+                on         : function() { flag = true; },
+                description: 'A long option named integers'
+            }
+        ]);
+        param.process('--long', '1');
+        } catch(e) { console.log(e); }
+        assert.equal(flag, true, 'On event called');
+    });
+});
