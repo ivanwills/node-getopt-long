@@ -316,7 +316,19 @@ for ( var i in test_data ) {
 describe('Argument events', function() {
     it('are called', function() {
         var flag;
-        try {
+        var param = new Param.param([
+            'long|l!',
+            {
+                on         : function() { flag = true; },
+                description: 'A long option named integers'
+            }
+        ]);
+        param.process('--no-long');
+        assert.equal(flag, true, 'On event called');
+    });
+
+    it('are called on arguments', function() {
+        var flag;
         var param = new Param.param([
             'long|l=i',
             {
@@ -325,7 +337,6 @@ describe('Argument events', function() {
             }
         ]);
         param.process('--long', '1');
-        } catch(e) { console.log(e); }
         assert.equal(flag, true, 'On event called');
     });
 });
