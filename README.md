@@ -24,13 +24,16 @@ Synopsis
         ['l|list=s@',   'Argument with an expected string value that can be specified multiple times'],
         ['o|object=s%', {
             description: 'Argument with an expected key=value string, with other config options',
-            test       : function(value, getoptLongObject, paramObject) {
+            test: function(value, key, getoptLongObject, paramObject) {
                 if (value.match(/bad thing/)) {
                     // test failures must be thrown errors
                     throw '--object must not be a bad thing!';
                 }
                 // return value should be returned (useful for casting to ints, doubles etc)
                 return value;
+            },
+            on: function(value, getoptLongObject, paramObject) {
+                // do something --object is ecnountered there
             }
         }]
     ]).process();
@@ -63,4 +66,11 @@ Creates a new getoptLong object and configures it.
 --------------------------------------------
 
 Create a new getoptLong object, configures it and processes the command line options
+
+Options
+=======
+
+Options are specified in one of two froms ['spec', 'description'] or ['sepc', { description: 'text'[, test: function() {} || , on: function () {}]}]
+Every option generates an internal *getoptLongParam* object. Options specified on the command line are checked in the specified order so if any conflicts in
+maes occur the first one wins.
 
