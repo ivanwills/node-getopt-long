@@ -12,7 +12,7 @@ var test_data = [
     {
         name  : 'Simple long help',
         config: ['long|long-option|l', {description: 'The long argument'}],
-        help  : '  -l --long-option \n                The long argument\n'
+        help  : '  -l --long-option\n                The long argument\n'
     },
     {
         name  : 'long option only help',
@@ -23,6 +23,21 @@ var test_data = [
         name  : 'short option only help',
         config: ['s', {description: 'Only short argument'}],
         help  : '  -s            Only short argument\n'
+    },
+    {
+        name  : 'short int only help',
+        config: ['s=i', {description: 'Only short argument'}],
+        help  : '  -s[=]int      Only short argument\n'
+    },
+    {
+        name  : 'short float only help',
+        config: ['s=d', {description: 'Only short argument'}],
+        help  : '  -s[=]float    Only short argument\n'
+    },
+    {
+        name  : 'short float only help',
+        config: ['s=i', {description: 'Only short argument', paramName: '0..9'}],
+        help  : '  -s[=]0..9     Only short argument\n'
     }
 ];
 
