@@ -176,3 +176,19 @@ describe('Protections', function() {
     });
 });
 
+describe('Simplest usage', function() {
+    it('use options', function() {
+        var opt, error = false;
+        try {
+            process.argv = ['node', 'test', '--long'];
+            var opt = getoptLong.options([
+                ['long|l', 'Long options']
+            ]);
+        }
+        catch (e) {
+            error = e;
+        }
+        assert.equal(error, false, 'No errors using option');
+        assert.deepEqual(opt, {long: true}, 'Get the answer that we expect');
+    });
+});
