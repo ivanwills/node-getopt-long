@@ -35,6 +35,16 @@ var test_data = [
         help  : '  -s[=]float    Only short argument\n'
     },
     {
+        name  : 'short string only help',
+        config: ['s=s', {description: 'Only short argument', paramName: 'a..z'}],
+        help  : '  -s[=]a..z     Only short argument\n'
+    },
+    {
+        name  : 'short float only help',
+        config: ['s=f', {description: 'Only short argument', paramName: '0.0..9.0'}],
+        help  : '  -s[=]0.0..9.0 Only short argument\n'
+    },
+    {
         name  : 'short float only help',
         config: ['s=i', {description: 'Only short argument', paramName: '0..9'}],
         help  : '  -s[=]0..9     Only short argument\n'
