@@ -11,6 +11,8 @@ var test_data = [
             {}
         ],
         help: '  test\n'
+            + '\n'
+            + ' Options:\n'
             + '  -l --long     Long message\n'
     }
 ];
