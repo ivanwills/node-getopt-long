@@ -77,3 +77,38 @@ describe('Full help', function() {
         })(test_data[i]);
     }
 });
+
+describe('Help with object prototype extras', function() {
+    beforeEach(function() {
+        Array.prototype.junk = true;
+        Object.prototype.junk = true;
+    });
+    afterEach(function() {
+        delete Array.prototype.junk;
+        delete Object.prototype.junk;
+    });
+
+    it('Unsafe config prototype items', function() {
+        process.argv = ['node', 'test'];
+        var opt;
+        try {
+            opt = getoptLong.configure([
+                    ['long|l', "Long message"]
+                ],
+                {
+                    name: '~/foo',
+                }
+            );
+        }
+        catch (e) {
+            console.log(e);
+        }
+        assert.equal('  ~/foo\n'
+            + '\n'
+            + ' Options:\n'
+            + '  -l --long     Long message\n'
+            , opt.help()
+            , 'Help text generated correctly'
+        );
+    });
+});
