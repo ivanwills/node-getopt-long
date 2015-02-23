@@ -28,6 +28,22 @@ var test_data = [
             + '\n'
             + ' Options:\n'
             + '  -l --long     Long message\n'
+    },
+    {
+        name  : 'Specify help suffix',
+        config: [[
+                ['long|l', "Long message"]
+            ],
+            {
+                helpSuffix: ' Eg test --long',
+            }
+        ],
+        help: '  test\n'
+            + '\n'
+            + ' Options:\n'
+            + '  -l --long     Long message\n'
+            + '\n'
+            + ' Eg test --long\n'
     }
 ];
 
