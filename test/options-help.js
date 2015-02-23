@@ -14,6 +14,20 @@ var test_data = [
             + '\n'
             + ' Options:\n'
             + '  -l --long     Long message\n'
+    },
+    {
+        name  : 'Specify command name',
+        config: [[
+                ['long|l', "Long message"]
+            ],
+            {
+                name: 'test.js'
+            }
+        ],
+        help: '  test.js\n'
+            + '\n'
+            + ' Options:\n'
+            + '  -l --long     Long message\n'
     }
 ];
 
