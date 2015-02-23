@@ -14,6 +14,7 @@ var test_data = [
             + '\n'
             + ' Options:\n'
             + '  -l --long     Long message\n'
+            + '     --help     Show this help message\n'
     },
     {
         name  : 'Specify command name',
@@ -28,6 +29,7 @@ var test_data = [
             + '\n'
             + ' Options:\n'
             + '  -l --long     Long message\n'
+            + '     --help     Show this help message\n'
     },
     {
         name  : 'Specify help suffix',
@@ -42,6 +44,7 @@ var test_data = [
             + '\n'
             + ' Options:\n'
             + '  -l --long     Long message\n'
+            + '     --help     Show this help message\n'
             + '\n'
             + ' Eg test --long\n'
     },
@@ -58,6 +61,7 @@ var test_data = [
             + '  test --long\n'
             + ' Options:\n'
             + '  -l --long     Long message\n'
+            + '     --help     Show this help message\n'
     }
 ];
 
@@ -107,6 +111,7 @@ describe('Help with object prototype extras', function() {
             + '\n'
             + ' Options:\n'
             + '  -l --long     Long message\n'
+            + '     --help     Show this help message\n'
             , opt.help()
             , 'Help text generated correctly'
         );
