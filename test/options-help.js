@@ -44,6 +44,20 @@ var test_data = [
             + '  -l --long     Long message\n'
             + '\n'
             + ' Eg test --long\n'
+    },
+    {
+        name  : 'Specify help prefix',
+        config: [[
+                ['long|l', "Long message"]
+            ],
+            {
+                helpPrefix: '  test --long\n'
+            }
+        ],
+        help: '  test\n'
+            + '  test --long\n'
+            + ' Options:\n'
+            + '  -l --long     Long message\n'
     }
 ];
 
