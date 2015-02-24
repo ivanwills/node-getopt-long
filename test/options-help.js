@@ -153,3 +153,44 @@ describe('Help with object prototype extras', function() {
         );
     });
 });
+
+describe('Help when --help is returned', function() {
+    var exit = process.exit,
+        outWrite = process.stdout.write,
+        errWrite = process.stderr.write,
+        exitedWith,
+        outText,
+        errText;
+
+    beforeEach(function() {
+        // hack in alt exit method for testing
+        process.exit = function(code) {
+            exitedWith = code;
+        };
+        process.stdout.write = function(text) {
+            outText = text;
+        };
+        process.stderr.write = function(text) {
+            errText = text;
+        };
+    });
+    afterEach(function() {
+        // restore real exit
+        process.exit = exit;
+        process.stdout.write = outWrite;
+        process.stderr.write = errWrite;
+    });
+
+    it('Unsafe config prototype items', function() {
+        process.argv = ['node', 'test', '--help'];
+        var opt;
+        try {
+            opt = getoptLong.options([['long|l', "Long message"]]);
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+        assert.equal(1, exitedWith, 'The correct exit code is seen ('+exitedWith+')');
+    });
+});
