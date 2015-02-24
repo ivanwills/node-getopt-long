@@ -25,6 +25,9 @@ var test_data = [
                 name: 'test.js'
             }
         ],
+        parameters: {
+            name: 'test.js'
+        },
         help: '  test.js\n'
             + '\n'
             + ' Options:\n'
@@ -40,6 +43,9 @@ var test_data = [
                 helpSuffix: ' Eg test --long',
             }
         ],
+        parameters: {
+            helpSuffix: ' Eg test --long',
+        },
         help: '  test\n'
             + '\n'
             + ' Options:\n'
@@ -57,11 +63,33 @@ var test_data = [
                 helpPrefix: '  test --long\n'
             }
         ],
+        parameters: {
+            helpPrefix: '  test --long\n'
+        },
         help: '  test\n'
             + '  test --long\n'
             + ' Options:\n'
             + '  -l --long     Long message\n'
             + '     --help     Show this help message\n'
+    },
+    {
+        name  : 'Specify command version',
+        config: [[
+                ['long|l', "Long message"]
+            ],
+            {
+                commandVersion: 0.1
+            }
+        ],
+        parameters: {
+            commandVersion: 0.1
+        },
+        help: '  test\n'
+            + '\n'
+            + ' Options:\n'
+            + '  -l --long     Long message\n'
+            + '     --help     Show this help message\n'
+            + '     --version  Show the version of this command\n'
     }
 ];
 
@@ -76,6 +104,13 @@ describe('Full help', function() {
                 catch (e) {
                     console.log(e);
                 }
+
+                if (test.parameters) {
+                    for (var key in test.parameters) {
+                        assert.equal(test.parameters[key], opt[key], 'Check that ' + key + ' is set to ' + test.parameters[key] + ' (got "' + opt[key] + '")');
+                    }
+                }
+
                 assert.equal(test.help, opt.help(), 'help generated correctly\n"' + test.help + '"\n"' + opt.help() + '"\n');
             });
         })(test_data[i]);
@@ -107,6 +142,7 @@ describe('Help with object prototype extras', function() {
         catch (e) {
             console.log(e);
         }
+
         assert.equal('  ~/foo\n'
             + '\n'
             + ' Options:\n'
