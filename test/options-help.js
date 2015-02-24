@@ -1,4 +1,4 @@
-/* global require, describe, it, assert, beforeEach */
+/* global process, require, describe, it, assert, beforeEach */
 var assert = require('assert');
 var getoptLong = require('../lib/getopt-long.js');
 
@@ -81,6 +81,8 @@ var test_data = [
                 commandVersion: 0.1
             }
         ],
+        argv: ['--help'],
+        exit: 1,
         parameters: {
             commandVersion: 0.1
         },
@@ -94,12 +96,41 @@ var test_data = [
 ];
 
 describe('Full help', function() {
+    var exit     = process.exit,
+        outWrite = process.stdout.write,
+        errWrite = process.stderr.write,
+        exitedWith,
+        outText,
+        errText;
+
+    beforeEach(function() {
+        // hack in alt exit method for testing
+        process.exit = function(code) {
+            exitedWith = code;
+        };
+        process.stdout.write = function(text) {
+            outText = text;
+        };
+        process.stderr.write = function(text) {
+            errText = text;
+        };
+    });
+    afterEach(function() {
+        // restore real exit
+        process.exit = exit;
+        process.stdout.write = outWrite;
+        process.stderr.write = errWrite;
+    });
+
     for (var i in test_data) {
         (function(test) {
             it(test.name, function() {
-                process.argv = ['node', 'test'];
+                var obj, opt;
+                process.argv = test.argv ? test.argv : [];
+                process.argv.unshift('node', 'test');
                 try {
-                    var opt = getoptLong.configure.apply(this, test.config);
+                    obj = getoptLong.configure.apply(this, test.config);
+                    opt = obj.process();
                 }
                 catch (e) {
                     console.log(e);
@@ -107,11 +138,27 @@ describe('Full help', function() {
 
                 if (test.parameters) {
                     for (var key in test.parameters) {
-                        assert.equal(test.parameters[key], opt[key], 'Check that ' + key + ' is set to ' + test.parameters[key] + ' (got "' + opt[key] + '")');
+                        assert.equal(
+                            test.parameters[key],
+                            obj[key],
+                            'Check that ' + key + ' is set to ' + test.parameters[key] + ' (got "' + obj[key] + '")'
+                        );
                     }
                 }
 
-                assert.equal(test.help, opt.help(), 'help generated correctly\n"' + test.help + '"\n"' + opt.help() + '"\n');
+                assert.equal(
+                    test.help,
+                    obj.help(),
+                    'help generated correctly\n"' + test.help + '"\n"' + obj.help() + '"\n'
+                );
+
+                if (test.exit) {
+                    assert.equal(
+                        test.exit,
+                        exitedWith,
+                        'Check that script exited with ' + test.exit + ' (got ' + exitedWith + ')'
+                    );
+                }
             });
         })(test_data[i]);
     }
@@ -151,46 +198,5 @@ describe('Help with object prototype extras', function() {
             , opt.help()
             , 'Help text generated correctly'
         );
-    });
-});
-
-describe('Help when --help is returned', function() {
-    var exit = process.exit,
-        outWrite = process.stdout.write,
-        errWrite = process.stderr.write,
-        exitedWith,
-        outText,
-        errText;
-
-    beforeEach(function() {
-        // hack in alt exit method for testing
-        process.exit = function(code) {
-            exitedWith = code;
-        };
-        process.stdout.write = function(text) {
-            outText = text;
-        };
-        process.stderr.write = function(text) {
-            errText = text;
-        };
-    });
-    afterEach(function() {
-        // restore real exit
-        process.exit = exit;
-        process.stdout.write = outWrite;
-        process.stderr.write = errWrite;
-    });
-
-    it('Unsafe config prototype items', function() {
-        process.argv = ['node', 'test', '--help'];
-        var opt;
-        try {
-            opt = getoptLong.options([['long|l', "Long message"]]);
-        }
-        catch (e) {
-            console.log(e);
-        }
-
-        assert.equal(1, exitedWith, 'The correct exit code is seen ('+exitedWith+')');
     });
 });
