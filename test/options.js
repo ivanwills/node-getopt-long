@@ -96,6 +96,32 @@ var test_data = [
 for ( var i in test_data ) {
     (function(data) {
         describe(data.name, function() {
+            var exit     = process.exit,
+                outWrite = process.stdout.write,
+                errWrite = process.stderr.write,
+                exitedWith,
+                outText,
+                errText;
+
+            beforeEach(function() {
+                // hack in alt exit method for testing
+                process.exit = function(code) {
+                    exitedWith = code;
+                };
+                process.stdout.write = function(text) {
+                    outText = text;
+                };
+                process.stderr.write = function(text) {
+                    errText = text;
+                };
+            });
+            afterEach(function() {
+                // restore real exit
+                process.exit = exit;
+                process.stdout.write = outWrite;
+                process.stderr.write = errWrite;
+            });
+
             for (var j in data.cmdline) {
                 (function(test) {
                     it(test.name, function() {
@@ -117,7 +143,7 @@ for ( var i in test_data ) {
                             console.log({error: error, opt: opt.parameters, params: result, argv: process.argv, test: test});
                         }
                         if (test.error) {
-                            assert.equal(error, test.error, 'Get the expected error');
+                            assert.equal(errText, test.error, 'Get the expected error');
                         }
                         else {
                             assert.equal(error, false, 'No error creating object');
