@@ -25,6 +25,9 @@
     },
     "optionalDependencies": {},
     "readmeFilename": "README.md",
+    "scripts": {
+        "test": "gulp test"
+    },
     "engines": {
         "node": "*"
     }
