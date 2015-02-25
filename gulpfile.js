@@ -34,10 +34,10 @@ gulp.task('sonar', function () {
                 username: 'sonar',
                 password: 'sonar'
             },
-            projectKey: 'sonar:node-getopt-long:0.0.1',
+            projectKey: 'sonar:node-getopt-long:0.0.2',
             projectName: 'node-getopt-long',
-            projectVersion: '0.0.1',
-            // comma-delimited string of source directories 
+            projectVersion: '0.0.2',
+            // comma-delimited string of source directories
             sources: 'lib',
             language: 'js',
             sourceEncoding: 'UTF-8',
@@ -49,7 +49,7 @@ gulp.task('sonar', function () {
         }
     };
 
-    // gulp source doesn't matter, all files are referenced in options object above 
+    // gulp source doesn't matter, all files are referenced in options object above
     return gulp.src('lib/getopt-long.js', { read: false })
         .pipe(sonar(options))
         .on('error', gutil.log);
