@@ -52,7 +52,7 @@ Synopsis
 Description
 ===========
 
-*node-getopt-long* in a command line option parser inspired by perl's Getopt::Long option parser.
+*node-getopt-long* in a command line option parser inspired by Perl's Getopt::Long option parser.
 
 Exports
 =======
@@ -75,9 +75,11 @@ Create a new getoptLong object, configures it and processes the command line opt
 Options
 =======
 
-Options are specified in one of two froms ['spec', 'description'] or ['sepc', { description: 'text'[, test: function() {} || , on: function () {}]}]
-Every option generates an internal *getoptLongParam* object. Options specified on the command line are checked in the specified order so if any conflicts in
-maes occur the first one wins.
+Options are specified in one of two forms ['spec', 'description'] or
+['sepc', { description: 'text'[, test: function() {} || , on: function () {}]}]
+Every option generates an internal *getoptLongParam* object. Options specified
+on the command line are checked in the specified order so if any conflicts
+occur the first specified one wins.
 
 Configuration
 =============
