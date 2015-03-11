@@ -12,7 +12,7 @@ Synopsis
 ========
 
     var getoptLong = require('node-getopt-long');
-    var options = getoptLong.configure([
+    var options = getoptLong.options([
         ['a|arg',       'Simple true argument'],
         ['b|bar+',      'Numerically increasing argument'],
         ['c|can!',      'Negatable argument (allows --no-can to set to false)'],
@@ -41,7 +41,7 @@ Synopsis
         commandVersion: 0.1,
         helpPrefix    : 'Appears before arguments docs',
         helpPostfix   : 'Appears an the end of the help'
-    }).process();
+    });
 
     // or more compactly
     var options = require('node-getopt-long').configure([...]).process();
@@ -78,4 +78,16 @@ Options
 Options are specified in one of two froms ['spec', 'description'] or ['sepc', { description: 'text'[, test: function() {} || , on: function () {}]}]
 Every option generates an internal *getoptLongParam* object. Options specified on the command line are checked in the specified order so if any conflicts in
 maes occur the first one wins.
+
+Configuration
+=============
+
+There are a number of configuration options supported
+
+* name - Specify the commands name (if not specified the command name is dertermined by the how node is run
+* commandVersion - Specify a version number for the command (also makes --version option appear)
+* helpPrefix
+* helpSuffix
+* ignoreCase
+* bundle
 
