@@ -36,7 +36,12 @@ Synopsis
                 // do something --object is ecnountered there
             }
         }]
-    ]).process();
+    ], {
+        name          : 'scriptname',
+        commandVersion: 0.1,
+        helpPrefix    : 'Appears before arguments docs',
+        helpPostfix   : 'Appears an the end of the help'
+    }).process();
 
     // or more compactly
     var options = require('node-getopt-long').configure([...]).process();
