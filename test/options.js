@@ -90,6 +90,45 @@ var test_data = [
                 params: { long: true, verbose: 2 }
             }
         ],
+    },
+    {
+        'name'  : 'Default values',
+        'args'  : [
+            ['long|l=s', {description: 'A long named option'}],
+            ['other|o=i', {description: 'An other named option'}],
+        ],
+        'config' : {
+            defaults : {
+                long : 'Long',
+                other: 6
+            }
+        },
+        'cmdline': [
+            {
+                name  : 'passed short option',
+                argv  : [],
+                extra : [],
+                params: { long: 'Long', other: 6 }
+            },
+            {
+                name  : 'passed short option',
+                argv  : ['-l', 'my long'],
+                extra : [],
+                params: { long: 'my long', other: 6 }
+            },
+            {
+                name  : 'passed short option',
+                argv  : ['--long', 'my long', '-o3'],
+                extra : [],
+                params: { long: 'my long', other: 3 }
+            },
+            {
+                name  : 'terminate on --',
+                argv  : ['--other', 3],
+                extra : [],
+                params: { long: 'Long', other: 3 }
+            }
+        ],
     }
 ];
 
@@ -127,7 +166,7 @@ for ( var i in test_data ) {
                     it(test.name, function() {
                         var error, opt, result;
                         try {
-                            opt = getoptLong.configure(data.args);
+                            opt = getoptLong.configure(data.args, data.config);
                             process.argv = test.argv;
                             process.argv.unshift('node', 'test');
                             if (test.hasOwnProperty('extra')) {

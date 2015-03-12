@@ -21,7 +21,8 @@
         "gulp-jshint"   : "*",
         "gulp-mocha"    : "*",
         "gulp-sonar"    : "*",
-        "gulp-util"     : "*"
+        "gulp-util"     : "*",
+        "underscore"    : "*"
     },
     "optionalDependencies": {},
     "readmeFilename": "README.md",
