@@ -34,9 +34,9 @@ gulp.task('sonar', function () {
                 username: 'sonar',
                 password: 'sonar'
             },
-            projectKey: 'sonar:node-getopt-long:0.0.2',
+            projectKey: 'sonar:node-getopt-long:0.1.0',
             projectName: 'node-getopt-long',
-            projectVersion: '0.0.2',
+            projectVersion: '0.1.0',
             // comma-delimited string of source directories
             sources: 'lib',
             language: 'js',
