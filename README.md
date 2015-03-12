@@ -93,8 +93,9 @@ There are a number of configuration options supported
 
 * name - Specify the commands name (if not specified the command name is dertermined by the how node is run
 * commandVersion - Specify a version number for the command (also makes --version option appear)
-* helpPrefix
-* helpSuffix
-* ignoreCase
-* bundle
+* defaults - Object containing default values for parameters
+* helpPrefix - Text to be put at the front of help message
+* helpSuffix - Text to be put at the end of the help message
+* ignoreCase - TODO - choose weather arguments should be case sensitive or not (default is true)
+* bundle - TODO - allow bundling of short arguments (default is true)
 
