@@ -13,16 +13,16 @@ Synopsis
 
     var getoptLong = require('node-getopt-long');
     var options = getoptLong.options([
-        ['a|arg',       'Simple true argument'],
-        ['b|bar+',      'Numerically increasing argument'],
-        ['c|can!',      'Negatable argument (allows --no-can to set to false)'],
-        ['e|ev|even',   'Sort, medium and long names'],
+        ['arg|a',       'Simple true argument'],
+        ['bar|b+',      'Numerically increasing argument'],
+        ['can|c!',      'Negatable argument (allows --no-can to set to false)'],
+        ['even|ev|e',   'Sort, medium and long names'],
         ['first',       'Only long name'],
-        ['i|int=i',     'Argument with an expected integer value'],
-        ['f|float=d',   'Argument with an expected floating point value'],
-        ['g|groups=s',  'Argument with an expected string value'],
-        ['l|list=s@',   'Argument with an expected string value that can be specified multiple times'],
-        ['o|object=s%', {
+        ['int|i=i',     'Argument with an expected integer value'],
+        ['float|f=d',   'Argument with an expected floating point value'],
+        ['groups|g=s',  'Argument with an expected string value'],
+        ['list|l=s@',   'Argument with an expected string value that can be specified multiple times'],
+        ['object|o=s%', {
             description: 'Argument with an expected key=value string, with other config options',
             test: function(value, key, getoptLongObject, paramObject) {
                 if (value.match(/bad thing/)) {
@@ -40,7 +40,12 @@ Synopsis
         name          : 'scriptname',
         commandVersion: 0.1,
         helpPrefix    : 'Appears before arguments docs',
-        helpPostfix   : 'Appears an the end of the help'
+        helpPostfix   : 'Appears an the end of the help',
+        defaults      : {
+            arg : false,
+            can : true,
+            int : 25
+        }
     });
 
     // or more compactly
