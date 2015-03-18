@@ -13,6 +13,7 @@
     },
     "bugs":  "https://github.com/ivanwills/node-getopt-long/issues",
     "dependencies": {
+        "underscore"    : "*"
     },
     "devDependencies": {
         "assert"        : "*",
@@ -21,8 +22,7 @@
         "gulp-jshint"   : "*",
         "gulp-mocha"    : "*",
         "gulp-sonar"    : "*",
-        "gulp-util"     : "*",
-        "underscore"    : "*"
+        "gulp-util"     : "*"
     },
     "optionalDependencies": {},
     "readmeFilename": "README.md",
