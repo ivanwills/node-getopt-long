@@ -114,11 +114,29 @@ s = string and f = float. E.g.
 ** integer|i=i - requires an integer value
 ** float|f=f - requires a floating point number
 
-Value parameters can also be Array or Object values, Array values can be specified
-multiple times and object values are specified as key=value pairs. Eg
+Value parameters can also be Array or Object values, Array values can be
+specified multiple times and object values are specified as key=value
+pairs. Eg
 
 * array|a=s@ - would allow 'cmd -a value --array value2
-* objecto=s% - would allow 'cmd --object key=value -o key2=value2
+* object|o=s% - would allow 'cmd --object key=value -o key2=value2
+
+### Option Configuration
+
+For the simple case option configuration can be passed just the description
+as a string. If you want to specify more than the description you can pass
+an Object. The supported keys of that object are:
+
+* description - A description of the parameter for help
+* paramName - A descriptive name or example value for help
+* test - A function that can test a found value to see if it matches any
+required conditions. The function is passed the following parameters
+(value, key, getoptLongObject, paramObject). It must return the value,
+this allows test to change the type of the value (eg convert a string to an
+integer)
+* on - Another function that is called after any tests and allows you to
+perform other actions, no return value is required.
+
 
 Configuration
 =============
