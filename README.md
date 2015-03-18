@@ -6,7 +6,7 @@ Sophisticated command line argument passer
 Version
 =======
 
-This documentation refers to node-getopt-long version 0.1.1
+This documentation refers to node-getopt-long version 0.1.2
 
 Synopsis
 ========
