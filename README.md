@@ -11,8 +11,7 @@ This documentation refers to node-getopt-long version 0.0.1
 Synopsis
 ========
 
-    var getoptLong = require('node-getopt-long');
-    var options = getoptLong.options([
+    var options = require('node-getopt-long').options([
         ['arg|a',       'Simple true argument'],
         ['bar|b+',      'Numerically increasing argument'],
         ['can|c!',      'Negatable argument (allows --no-can to set to false)'],
@@ -48,11 +47,14 @@ Synopsis
         }
     });
 
-    // or more compactly
-    var options = require('node-getopt-long').configure([...]).process();
+    // or more verbosely
+    var getoptLong = require('node-getopt-long');
 
-    // or even more compactly (options runs configure and process internally)
-    var options = require('node-getopt-long').options([...]);
+    // get the configured getoptLong object
+    var getopt = getoptLong.configure([...], {...});
+
+    // Then process the arguments.
+    var options = getopt.process();
 
 Description
 ===========
@@ -85,6 +87,38 @@ Options are specified in one of two forms ['spec', 'description'] or
 Every option generates an internal *getoptLongParam* object. Options specified
 on the command line are checked in the specified order so if any conflicts
 occur the first specified one wins.
+
+### The Spec
+
+First the names, a pipe delimited list of names
+
+eg
+
+    name|longer-name|n
+
+The first name becomes the key to the returned options Object eg options.name
+
+Then comes '!', '+' or '='
+
+* ! - negate - allows the user to specify they don't want that option (eg --no-name)
+This sets the value for that object to false
+* + - increment - Allows the value to be incremented by specifying the option
+multiple times. E.g. for 'verbose|v+'
+
+    cmd -vvv
+
+would set option.verbose to 3.
+* = - assign a value - Allows the user to passing a value with a type n = integer,
+s = string and f = float. E.g.
+** string|s=s - requires a string value
+** integer|i=i - requires an integer value
+** float|f=f - requires a floating point number
+
+Value parameters can also be Array or Object values, Array values can be specified
+multiple times and object values are specified as key=value pairs. Eg
+
+* array|a=s@ - would allow 'cmd -a value --array value2
+* objecto=s% - would allow 'cmd --object key=value -o key2=value2
 
 Configuration
 =============
