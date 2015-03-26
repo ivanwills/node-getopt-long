@@ -1,4 +1,3 @@
-* Use
 * Get users
 * Sub-commands
 ** first argument as an Object
