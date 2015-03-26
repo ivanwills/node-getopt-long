@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ivanwills/node-getopt-long.svg?branch=master)](https://travis-ci.org/ivanwills/node-getopt-long)
+[![Build Status](https://travis-ci.org/ivanwills/node-getopt-long.svg?branch=master)](https://travis-ci.org/ivanwills/node-getopt-long?branch=master)
 [![Coverage Status](https://coveralls.io/repos/ivanwills/node-getopt-long/badge.svg?branch=master)](https://coveralls.io/r/ivanwills/node-getopt-long?branch=master)
 
 node-getopt-long
