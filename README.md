@@ -18,7 +18,7 @@ Synopsis
         ['arg|a',       'Simple true argument'],
         ['bar|b+',      'Numerically increasing argument'],
         ['can|c!',      'Negatable argument (allows --no-can to set to false)'],
-        ['even|ev|e',   'Sort, medium and long names'],
+        ['even|ev|e',   'Short, medium and long names'],
         ['first',       'Only long name'],
         ['int|i=i',     'Argument with an expected integer value'],
         ['float|f=d',   'Argument with an expected floating point value'],
