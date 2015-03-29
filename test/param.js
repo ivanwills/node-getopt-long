@@ -172,7 +172,7 @@ var test_data = [
     },
     {
         'name': 'Parameter with named ints',
-        'args': ['long|l=i%', { description: 'A long option named integers', test: [1,2] }],
+        'args': ['long|l=i%', { description: 'A long option named integers', test: {1: 3} }],
         'this': [
             [ 'name'     , 'long'          ],
             [ 'parameter', true            ],
@@ -270,7 +270,7 @@ for ( var i in test_data ) {
 
             for (var k in data.data) {
                 (function(test) {
-                    var call = '"' + ( test.arg instanceof Array ? test.arg.join(' ') : test.arg ) + '"';
+                    var call = '"' + ( test.arg instanceof Array ? test.arg.join(' ') : test.arg ) + '"' + (test.error ? ' fails' : '');
                     it('with parameter ' + call, function() {
                           var param, match, error;
                           try {
