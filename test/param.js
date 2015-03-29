@@ -223,6 +223,25 @@ var test_data = [
             { arg: '--long=val=7'   , match: 1, value: {val: 7}      },
             { arg: '--long=thing=-1', match: 0, error: 'No things\n' }
         ]
+    },
+    {
+        'name': 'Parameter with test as an array',
+        'args': [
+            'long|l=s',
+            {
+                test       : ['yes', 'auto', 'no'],
+                description: 'Can it be long?'
+            }
+        ],
+        'this': [
+            [ 'name', 'long' ]
+        ],
+        'data': [
+            { arg: '--long=yes'  , match: 1, value: 'yes'  },
+            { arg: '--long=auto' , match: 1, value: 'auto' },
+            { arg: '--long=no'   , match: 1, value: 'no'   },
+            { arg: '--long=other', match: 0, error: '--long must be one of yes, auto, no\n' }
+        ]
     }
 ];
 
