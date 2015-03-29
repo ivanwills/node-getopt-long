@@ -37,6 +37,10 @@ Synopsis
             on: function(value, getoptLongObject, paramObject) {
                 // do something --object is ecnountered there
             }
+        }],
+        ['fixed|F=s', {
+            description: 'This argument has a fixed set of values it can take',
+            test       : ['yes', 'auto', 'no']
         }]
     ], {
         name          : 'scriptname',
