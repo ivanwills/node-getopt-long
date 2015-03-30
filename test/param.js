@@ -242,6 +242,22 @@ var test_data = [
             { arg: '--long=no'   , match: 1, value: 'no'   },
             { arg: '--long=other', match: 0, error: '--long must be one of yes, auto, no\n' }
         ]
+    },
+    {
+        'name': 'Parameter with auto number',
+        'args': [
+            'long|l++', { description: 'Can it be long?' }
+        ],
+        'this': [
+            [ 'name', 'long' ]
+        ],
+        'data': [
+            { arg: '--long=1'    , match: 1, value: 1  },
+            { arg: ['--long','2'], match: 2, value: 2  },
+            { arg: ['-l', '3'   ], match: 2, value: 3  },
+            { arg: '-4'          , match: 1, value: 4  },
+            { arg: '-40'         , match: 1, value: 40 }
+        ]
     }
 ];
 
