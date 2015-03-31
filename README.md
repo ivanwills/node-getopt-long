@@ -106,7 +106,7 @@ eg
 
 The first name becomes the key to the returned options Object eg options.name
 
-Then comes '!', '+' or '='
+Then comes '!', '+', '++' or '='
 
 * ! - negate - allows the user to specify they don't want that option (eg --no-name)
 This sets the value for that object to false
@@ -116,6 +116,10 @@ multiple times. E.g. for 'verbose|v+'
     cmd -vvv
 
 would set option.verbose to 3.
+* ++ - Numerical arguments this allows for short hand numerical arguments eg if
+the spec is 'foo|f++' then you can use "-5" on the command line to mean "--foo 5".
+This should be done on only one argument, two or more use it the first argument
+will win.
 * = - assign a value - Allows the user to passing a value with a type n = integer,
 s = string and f = float. E.g.
 ** string|s=s - requires a string value
