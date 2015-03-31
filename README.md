@@ -17,6 +17,7 @@ Synopsis
     var options = require('node-getopt-long').options([
         ['arg|a',       'Simple true argument'],
         ['bar|b+',      'Numerically increasing argument'],
+        ['foo|f++',     'Numerically argument (eg can use -f 123 or -123)'],
         ['can|c!',      'Negatable argument (allows --no-can to set to false)'],
         ['even|ev|e',   'Short, medium and long names'],
         ['first',       'Only long name'],
