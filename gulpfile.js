@@ -30,7 +30,7 @@ gulp.task('sonar', function () {
                 url: 'http://localhost:9000'
             },
             jdbc: {
-                url: 'jdbc:mysql://localhost:3306/sonar',
+                url: 'jdbc:postgresql://localhost/sonar',
                 username: 'sonar',
                 password: 'sonar'
             },
