@@ -1,4 +1,5 @@
-/* global require, describe, it, assert, beforeEach */
+/* global require, describe, it, beforeEach, afterEach, process */
+var _ = require('underscore');
 var assert = require('assert');
 var getoptLong = require('../lib/getopt-long.js');
 
@@ -132,95 +133,106 @@ var test_data = [
     }
 ];
 
-for ( var i in test_data ) {
-    (function(data) {
-        describe(data.name, function() {
-            var exit     = process.exit,
-                outWrite = process.stdout.write,
-                errWrite = process.stderr.write,
-                exitedWith,
-                outText,
-                errText;
+_.each(test_data, function(data) {
+    describe(data.name, function() {
+        var exit     = process.exit,
+            outWrite = process.stdout.write,
+            errWrite = process.stderr.write,
+            exitedWith,
+            outText,
+            errText;
 
-            beforeEach(function() {
-                // hack in alt exit method for testing
-                process.exit = function(code) {
-                    exitedWith = code;
-                };
-                process.stdout.write = function(text) {
-                    outText = text;
-                };
-                process.stderr.write = function(text) {
-                    errText = text;
-                };
-            });
-            afterEach(function() {
-                // restore real exit
-                process.exit = exit;
-                process.stdout.write = outWrite;
-                process.stderr.write = errWrite;
-            });
-
-            for (var j in data.cmdline) {
-                (function(test) {
-                    it(test.name, function() {
-                        var error, opt, result;
-                        try {
-                            opt = getoptLong.configure(data.args, data.config);
-                            process.argv = test.argv;
-                            process.argv.unshift('node', 'test');
-                            if (test.hasOwnProperty('extra')) {
-                                test.extra.unshift('node', 'test');
-                            }
-                            result = opt.process();
-                            error = false;
-                        }
-                        catch (e) {
-                            error = e;
-                        }
-                        if (error && !test.error) {
-                            console.log({error: error, opt: opt.parameters, params: result, argv: process.argv, test: test});
-                        }
-                        if (test.error) {
-                            assert.equal(errText, test.error, 'Get the expected error');
-                        }
-                        else {
-                            assert.equal(error, false, 'No error creating object');
-                        }
-                        if (test.params) {
-                            assert.deepEqual(test.params, result, 'Get the expected params set ('+JSON.stringify(test.params)+' vs '+JSON.stringify(result)+')');
-                        }
-                        if (test.extra) {
-                            assert.deepEqual(test.extra, process.argv, 'Get the expected leftover arguments set');
-                        }
-                    });
-                })(data.cmdline[j]);
-            }
-
-            for (var k in data.params) {
-                (function(test) {
-                    it(test.name, function() {
-                        var error, opt;
-                        try {
-                            opt = getoptLong.options(data.args);
-                        }
-                        catch (e) {
-                           error = e;
-                        }
-                        assert.true(!error, test.error);
-                        assert.equal(test.value, opt[test.param], 'Test that ' + test.param + ' is equal to ' + test.value + ' (actual is ' + opt[test.param] + ')');
-                    });
-                })(data.params[k]);
-            }
-
+        beforeEach(function() {
+            // hack in alt exit method for testing
+            process.exit = function(code) {
+                exitedWith = code;
+            };
+            process.stdout.write = function(text) {
+                outText = text;
+            };
+            process.stderr.write = function(text) {
+                errText = text;
+            };
         });
-    })(test_data[i]);
-}
+        afterEach(function() {
+            // restore real exit
+            process.exit = exit;
+            process.stdout.write = outWrite;
+            process.stderr.write = errWrite;
+        });
+
+        _.each(data.cmdline, function(test) {
+            it(test.name, function() {
+                var error, opt, result;
+                try {
+                    opt = getoptLong.configure(data.args, data.config);
+                    process.argv = test.argv;
+                    process.argv.unshift('node', 'test');
+                    if (test.hasOwnProperty('extra')) {
+                        test.extra.unshift('node', 'test');
+                    }
+                    result = opt.process();
+                    error = false;
+                }
+                catch (e) {
+                    error = e;
+                }
+                if (error && !test.error) {
+                    console.log({error: error, opt: opt.parameters, params: result, argv: process.argv, test: test});
+                }
+                if (test.error) {
+                    assert.equal(errText, test.error, 'Get the expected error');
+                }
+                else {
+                    assert.equal(error, false, 'No error creating object');
+                }
+                if (test.params) {
+                    assert.deepEqual(test.params, result, 'Get the expected params set ('+JSON.stringify(test.params)+' vs '+JSON.stringify(result)+')');
+                }
+                if (test.extra) {
+                    assert.deepEqual(test.extra, process.argv, 'Get the expected leftover arguments set');
+                }
+            });
+        });
+
+        _.each(data.params, function(test) {
+            it(test.name, function() {
+                var error, opt;
+                try {
+                    opt = getoptLong.options(data.args);
+                }
+                catch (e) {
+                   error = e;
+                }
+                assert.true(!error, test.error);
+                assert.equal(test.value, opt[test.param], 'Test that ' + test.param + ' is equal to ' + test.value + ' (actual is ' + opt[test.param] + ')');
+            });
+        });
+
+    });
+});
+
+describe('Simplest usage', function() {
+    it('use options', function() {
+        var opt = {}, error = false;
+        try {
+            process.argv = ['node', 'test', '--long'];
+            opt = getoptLong.options([
+                ['long|l', 'Long options']
+            ], {defaults: {} });
+        }
+        catch (e) {
+            error = e;
+        }
+        assert.equal(error, false, 'No errors using option');
+        assert.deepEqual(opt, {long: true}, 'Get the answer that we expect');
+    });
+});
 
 describe('Protections', function() {
     beforeEach(function() {
         Array.prototype.junk = true;
-        Object.prototype.junk = true;
+        Object.prototype.garbage = true;
     });
     afterEach(function() {
         delete Array.prototype.junk;
@@ -229,7 +241,7 @@ describe('Protections', function() {
     it('not own properties ignored', function() {
         var error = false;
         try {
-            var opt = new getoptLong.get;
+            var opt = new getoptLong.get();
             opt.configure([['log|l', { description: 'long option' }]]);
             process.argv = ['node', 'test', '-l'];
             opt.process();
@@ -238,22 +250,5 @@ describe('Protections', function() {
             error = e;
         }
         assert.equal(error, false, 'No error given when array has extra prototype property');
-    });
-});
-
-describe('Simplest usage', function() {
-    it('use options', function() {
-        var opt, error = false;
-        try {
-            process.argv = ['node', 'test', '--long'];
-            var opt = getoptLong.options([
-                ['long|l', 'Long options']
-            ]);
-        }
-        catch (e) {
-            error = e;
-        }
-        assert.equal(error, false, 'No errors using option');
-        assert.deepEqual(opt, {long: true}, 'Get the answer that we expect');
     });
 });

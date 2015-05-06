@@ -1,4 +1,5 @@
-/* global process, require, describe, it, assert, beforeEach */
+/* global process, require, describe, it, beforeEach, afterEach */
+var _ = require('underscore');
 var assert = require('assert');
 var getoptLong = require('../lib/getopt-long.js');
 
@@ -122,46 +123,44 @@ describe('Full help', function() {
         process.stderr.write = errWrite;
     });
 
-    for (var i in test_data) {
-        (function(test) {
-            it(test.name, function() {
-                var obj, opt;
-                process.argv = test.argv ? test.argv : [];
-                process.argv.unshift('node', 'test');
-                try {
-                    obj = getoptLong.configure.apply(this, test.config);
-                    opt = obj.process();
-                }
-                catch (e) {
-                    console.log(e);
-                }
+    _.each(test_data, function(test) {
+        it(test.name, function() {
+            var obj, opt;
+            process.argv = test.argv ? test.argv : [];
+            process.argv.unshift('node', 'test');
+            try {
+                obj = getoptLong.configure.apply(this, test.config);
+                opt = obj.process();
+            }
+            catch (e) {
+                console.log(e);
+            }
 
-                if (test.parameters) {
-                    for (var key in test.parameters) {
-                        assert.equal(
-                            test.parameters[key],
-                            obj[key],
-                            'Check that ' + key + ' is set to ' + test.parameters[key] + ' (got "' + obj[key] + '")'
-                        );
-                    }
-                }
-
-                assert.equal(
-                    test.help,
-                    obj.help(),
-                    'help generated correctly\n"' + test.help + '"\n"' + obj.help() + '"\n'
-                );
-
-                if (test.exit) {
+            if (test.parameters) {
+                for (var key in test.parameters) {
                     assert.equal(
-                        test.exit,
-                        exitedWith,
-                        'Check that script exited with ' + test.exit + ' (got ' + exitedWith + ')'
+                        test.parameters[key],
+                        obj[key],
+                        'Check that ' + key + ' is set to ' + test.parameters[key] + ' (got "' + obj[key] + '")'
                     );
                 }
-            });
-        })(test_data[i]);
-    }
+            }
+
+            assert.equal(
+                test.help,
+                obj.help(),
+                'help generated correctly\n"' + test.help + '"\n"' + obj.help() + '"\n'
+            );
+
+            if (test.exit) {
+                assert.equal(
+                    test.exit,
+                    exitedWith,
+                    'Check that script exited with ' + test.exit + ' (got ' + exitedWith + ')'
+                );
+            }
+        });
+    });
 });
 
 describe('Help with object prototype extras', function() {
