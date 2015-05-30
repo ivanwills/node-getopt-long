@@ -14,6 +14,7 @@ This documentation refers to node-getopt-long version 0.1.2
 Synopsis
 ========
 
+```js
     var options = require('node-getopt-long').options([
         ['arg|a',       'Simple true argument'],
         ['bar|b+',      'Numerically increasing argument'],
@@ -63,6 +64,7 @@ Synopsis
 
     // Then process the arguments.
     var options = getopt.process();
+```
 
 Description
 ===========
