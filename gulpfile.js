@@ -1,3 +1,5 @@
+/* global require */
+
 var gulp     = require('gulp');
 var mocha    = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
@@ -11,7 +13,7 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('test', function(cb) {
+gulp.task('test', function() {
     return gulp.src(['lib/*.js'])
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())

@@ -1,4 +1,4 @@
-/* global require, describe, it, assert, beforeEach */
+/* global require, describe, it, assert */
 
 var assert = require('assert');
 var Param = require('../lib/getopt-long-param.js');
