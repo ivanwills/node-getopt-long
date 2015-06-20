@@ -1,4 +1,4 @@
-/* global require, describe, it, assert, beforeEach */
+/* global require, describe, it, beforeEach */
 
 var assert = require('assert');
 var Param = require('../lib/getopt-long-param.js');
@@ -137,7 +137,12 @@ var test_data = [
             'long|l=i',
             {
                 description: 'A long option with an integer',
-                test: function(val) { if (val < 0) throw '--long must be a positive integer\n'; return val; }
+                test: function(val) {
+                    if (val < 0) {
+                        throw '--long must be a positive integer\n';
+                    }
+                    return val;
+                }
             }
         ],
         'this': [
@@ -195,7 +200,12 @@ var test_data = [
         'args': [
             'long|l=i%',
             {
-                test       : function(value) { if (value < 0) { throw 'No negatives\n'; } return value },
+                test       : function(value) {
+                    if (value < 0) {
+                        throw 'No negatives\n';
+                    }
+                    return value;
+                },
                 description: 'A long option named integers'
             }
         ],
@@ -212,7 +222,12 @@ var test_data = [
         'args': [
             'long|l=i%',
             {
-                test       : function(value, key) { if (key === 'thing') { throw 'No things\n'; } return value },
+                test       : function(value, key) {
+                    if (key === 'thing') {
+                        throw 'No things\n';
+                    }
+                    return value;
+                },
                 description: 'A long option named integers'
             }
         ],
