@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/ivanwills/node-getopt-long.svg?branch=master)](https://travis-ci.org/ivanwills/node-getopt-long?branch=master)
 [![Coverage Status](https://coveralls.io/repos/ivanwills/node-getopt-long/badge.svg?branch=master)](https://coveralls.io/r/ivanwills/node-getopt-long?branch=master)
 [![Dependency Status](https://david-dm.org/ivanwills/node-getopt-long.svg)](https://david-dm.org/ivanwills/node-getopt-long.svg)
+[![Code Quality](https://www.codacy.com/project/badge/23cf2066e4654fdba5e6d50f1f729268)](https://www.codacy.com/app/ivan-wills/node-getopt-long)
 
 node-getopt-long
 ================
