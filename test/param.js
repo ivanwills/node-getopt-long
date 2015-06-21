@@ -2,6 +2,7 @@
 
 var assert = require('assert');
 var Param = require('../lib/getopt-long-param.js');
+var _ = require('underscore');
 
 var test_data = [
     {
@@ -276,92 +277,85 @@ var test_data = [
     }
 ];
 
-for ( var i in test_data ) {
-    (function(data) {
-        describe(data.name, function() {
+_.each(test_data, function(data) {
+    describe(data.name, function() {
 
-            if (data['this']) {
-                for (var j in data['this']) {
-                    (function(test) {
-                        it('sets ' + test[0], function() {
-                            var param, error;
-                            try {
-                                param = new Param.param(data.args);
-                                error = false;
-                            }
-                            catch (e) {
-                                error = e;
-                            }
-                            assert(!error, 'No error creating new parameter');
-                            assert.deepEqual(param[test[0]], test[1], test[2]);
-                        });
-                    })(data['this'][j]);
-                }
-            }
+        if (data['this']) {
+            _.each(data['this'], function(test) {
+                it('sets ' + test[0], function() {
+                    var param, error;
+                    try {
+                        param = new Param.param(data.args);
+                        error = false;
+                    }
+                    catch (e) {
+                        error = e;
+                    }
+                    assert(!error, 'No error creating new parameter');
+                    assert.deepEqual(param[test[0]], test[1], test[2]);
+                });
+            });
+        }
 
-            for (var k in data.data) {
-                (function(test) {
-                    var call = '"' + ( test.arg instanceof Array ? test.arg.join(' ') : test.arg ) + '"' + (test.error ? ' fails' : '');
-                    it('with parameter ' + call, function() {
-                          var param, match, error;
-                          try {
-                              param = new Param.param(data.args);
-                              if (!(test.arg instanceof Array)) {
-                                  test.arg = [test.arg];
-                              }
+        _.each(data.data, function(test) {
+            var call = '"' + ( test.arg instanceof Array ? test.arg.join(' ') : test.arg ) + '"' + (test.error ? ' fails' : '');
+            it('with parameter ' + call, function() {
+                  var param, match, error;
+                  try {
+                      param = new Param.param(data.args);
+                      if (!(test.arg instanceof Array)) {
+                          test.arg = [test.arg];
+                      }
 
-                              match = 0;
-                              while (test.arg.length) {
-                                  var nextMatch = param.process.apply(param, test.arg);
-                                  if (nextMatch < 0) {
-                                      test.arg[0] = test.arg[0].replace(/^-./, '-');
-                                  }
-                                  else {
-                                      test.arg.shift();
-                                  }
-                                  match = match + nextMatch;
-                              }
-
-                              error = false;
-                          }
-                          catch (e) {
-                              error = e;
-                          }
-                          if (!test.error) {
-                              if (match != test.match || error) {
-                                  console.log('Expect no errors\n', {
-                                      param: param,
-                                      error: error,
-                                      match: match,
-                                      test : test
-                                  });
-                              }
-                              assert(!error, 'No error creating new parameter');
-                              assert.equal(test.match, match, 'Check that ' + call + ' sets match to ' + test.match + ' (actual = ' + match);
-                              if ( typeof param.value === 'object' ) {
-                                  assert.deepEqual(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
-                              }
-                              else {
-                                  assert.equal(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
-                              }
+                      match = 0;
+                      while (test.arg.length) {
+                          var nextMatch = param.process.apply(param, test.arg);
+                          if (nextMatch < 0) {
+                              test.arg[0] = test.arg[0].replace(/^-./, '-');
                           }
                           else {
-                              if (test.error !== error) {
-                                  console.log('Expect errors\n', {
-                                      param: param,
-                                      error: error,
-                                      test : test
-                                  });
-                              }
-                              assert.equal(test.error, error, 'Check that ' + call + ' throws and error');
+                              test.arg.shift();
                           }
-                    });
-                })(data.data[k]);
-            }
+                          match = match + nextMatch;
+                      }
 
+                      error = false;
+                  }
+                  catch (e) {
+                      error = e;
+                  }
+                  if (!test.error) {
+                      if (match !== test.match || error) {
+                          console.log('Expect no errors\n', {
+                              param: param,
+                              error: error,
+                              match: match,
+                              test : test
+                          });
+                      }
+                      assert(!error, 'No error creating new parameter');
+                      assert.equal(test.match, match, 'Check that ' + call + ' sets match to ' + test.match + ' (actual = ' + match);
+                      if ( typeof param.value === 'object' ) {
+                          assert.deepEqual(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
+                      }
+                      else {
+                          assert.equal(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
+                      }
+                  }
+                  else {
+                      if (test.error !== error) {
+                          console.log('Expect errors\n', {
+                              param: param,
+                              error: error,
+                              test : test
+                          });
+                      }
+                      assert.equal(test.error, error, 'Check that ' + call + ' throws and error');
+                  }
+            });
         });
-    })(test_data[i]);
-}
+    });
+});
 
 describe('Argument events', function() {
     it('are called', function() {
