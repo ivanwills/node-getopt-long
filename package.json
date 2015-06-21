@@ -5,6 +5,7 @@
     "version"    : "0.2.3",
     "license"    : "GPL-3.0+",
     "keywords"   : ["commandline", "argument", "passing"],
+    "node"       : ">=0.10",
     "bin"        : {},
     "man"        : {},
     "repository" : {
