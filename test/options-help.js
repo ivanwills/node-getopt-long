@@ -7,7 +7,7 @@ var test_data = [
     {
         name  : 'Short config',
         config: [[
-                ['long|l', "Long message"]
+                ['long|l', 'Long message']
             ],
             {}
         ],
@@ -20,7 +20,7 @@ var test_data = [
     {
         name  : 'Specify command name',
         config: [[
-                ['long|l', "Long message"]
+                ['long|l', 'Long message']
             ],
             {
                 name: 'test.js'
@@ -38,7 +38,7 @@ var test_data = [
     {
         name  : 'Specify help suffix',
         config: [[
-                ['long|l', "Long message"]
+                ['long|l', 'Long message']
             ],
             {
                 helpSuffix: ' Eg test --long',
@@ -58,7 +58,7 @@ var test_data = [
     {
         name  : 'Specify help prefix',
         config: [[
-                ['long|l', "Long message"]
+                ['long|l', 'Long message']
             ],
             {
                 helpPrefix: '  test --long\n'
@@ -76,7 +76,7 @@ var test_data = [
     {
         name  : 'Specify command version',
         config: [[
-                ['long|l', "Long message"]
+                ['long|l', 'Long message']
             ],
             {
                 commandVersion: 0.1
@@ -178,7 +178,7 @@ describe('Help with object prototype extras', function() {
         var opt;
         try {
             opt = getoptLong.configure([
-                    ['long|l', "Long message"]
+                    ['long|l', 'Long message']
                 ],
                 {
                     name: '~/foo',
