@@ -137,13 +137,13 @@ describe('Full help', function() {
             }
 
             if (test.parameters) {
-                for (var key in test.parameters) {
+                _.each(test.parameters, function(params, key) {
                     assert.equal(
-                        test.parameters[key],
+                        params,
                         obj[key],
-                        'Check that ' + key + ' is set to ' + test.parameters[key] + ' (got "' + obj[key] + '")'
+                        'Check that ' + key + ' is set to ' + params + ' (got "' + obj[key] + '")'
                     );
-                }
+                });
             }
 
             assert.equal(
