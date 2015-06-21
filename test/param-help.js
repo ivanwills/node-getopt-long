@@ -1,7 +1,8 @@
-/* global require, describe, it, assert */
+/* global require, describe, it */
 
 var assert = require('assert');
 var Param = require('../lib/getopt-long-param.js');
+var _ = require('underscore');
 
 var test_data = [
     {
@@ -52,20 +53,18 @@ var test_data = [
 ];
 
 describe('Basic help', function () {
-    for (var i in test_data) {
-        (function(test) {
-            it(test.name, function() {
-                var param = new Param.param(test.config);
+    _.each(test_data, function(test) {
+        it(test.name, function() {
+            var param = new Param.param(test.config);
 
-                if (param.help() !== test.help) {
-                    console.log('"'+param.help()+'"\n"'+test.help+'"');
-                }
-                assert.equal(
-                    param.help(),
-                    test.help,
-                    'Get the correct help message line'
-                );
-            });
-        })(test_data[i]);
-    }
+            if (param.help() !== test.help) {
+                console.log('"'+param.help()+'"\n"'+test.help+'"');
+            }
+            assert.equal(
+                param.help(),
+                test.help,
+                'Get the correct help message line'
+            );
+        });
+    });
 });
