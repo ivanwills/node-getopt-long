@@ -60,4 +60,4 @@ gulp.task('sonar', function () {
 gulp.task('watch', function() {
     gulp.watch(['lib/**', 'test/**'], ['lint', 'test']);
 });
-gulp.task('quality', ['test', 'sonar']);
+gulp.task('quality', ['lint', 'test', 'sonar']);
