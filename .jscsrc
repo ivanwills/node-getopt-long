@@ -1,4 +1,5 @@
 {
     "preset": "yandex",
-    "disallowKeywordsOnNewLine": null
+    "disallowKeywordsOnNewLine": null,
+    "requireKeywordsOnNewLine": ["else"]
 }
