@@ -52,7 +52,7 @@ var test_data = [
     }
 ];
 
-describe('Basic help', function () {
+describe('Basic help', function() {
     _.each(test_data, function(test) {
         it(test.name, function() {
             var param = new Param.param(test.config);
