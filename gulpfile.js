@@ -38,7 +38,7 @@ gulp.task('sonar', function () {
             },
             projectKey: 'sonar:node-getopt-long',
             projectName: 'node-getopt-long',
-            projectVersion: '0.2.4',
+            projectVersion: '0.2.5',
             // comma-delimited string of source directories
             sources: 'lib',
             language: 'js',
