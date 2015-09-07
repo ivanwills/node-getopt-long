@@ -260,6 +260,20 @@ var test_data = [
         ]
     },
     {
+        'name': 'Parameter with test as an array of strings',
+        'args': [
+            'long|l=s@', "Many long args"
+        ],
+        'this': [
+            [ 'name', 'long' ],
+            [ 'list', true ]
+        ],
+        'data': [
+            { arg: ['--long=yes', '--long=no'   ], match: 2, value: ['yes', 'no']  },
+            { arg: ['--long=auto', '-l', 'other'], match: 3, value: ['auto', 'other'] }
+        ]
+    },
+    {
         'name': 'Parameter with auto number',
         'args': [
             'long|l++', { description: 'Can it be long?' }
@@ -335,8 +349,8 @@ _.each(test_data, function(data) {
                       }
                       assert(!error, 'No error creating new parameter');
                       assert.equal(test.match, match, 'Check that ' + call + ' sets match to ' + test.match + ' (actual = ' + match);
-                      if ( typeof param.value === 'object' ) {
-                          assert.deepEqual(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
+                      if ( typeof test.value === 'object' ) {
+                          assert.deepEqual(test.value, param.value, 'Check that ' + call + ' sets deeply to ' + test.value);
                       }
                       else {
                           assert.equal(test.value, param.value, 'Check that ' + call + ' set value to ' + test.value);
