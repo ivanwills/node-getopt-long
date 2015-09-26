@@ -50,7 +50,7 @@ Synopsis
         name          : 'scriptname',
         commandVersion: 0.1,
         helpPrefix    : 'Appears before arguments docs',
-        helpPostfix   : 'Appears an the end of the help',
+        helpSuffix    : 'Appears an the end of the help',
         defaults      : {
             arg : false,
             can : true,
