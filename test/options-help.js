@@ -74,7 +74,7 @@ var test_data = [
             + '     --help     Show this help message\n'
     },
     {
-        name  : 'Specify command version',
+        name  : 'Specify command version in help',
         config: [[
                 ['long|l', 'Long message']
             ],
@@ -160,6 +160,46 @@ describe('Full help', function() {
                 );
             }
         });
+    });
+});
+
+describe('Showing version number', function() {
+    var exit, write, txt;
+    beforeEach(function() {
+        exit = process.exit;
+        write = process.stdout.write;
+        process.exit = function() {
+        };
+        process.stdout.write = function(str) {
+            txt = str;
+        };
+    });
+    afterEach(function() {
+        process.exit = exit;
+        process.stdout.write = write;
+    });
+    it('Unsafe config prototype items', function() {
+        process.argv = ['node', 'test', '--version'];
+        var opt;
+        try {
+            opt = getoptLong.configure([
+                    ['long|l', 'Long message']
+                ],
+                {
+                    name: '~/foo',
+                    commandVersion: '1.1.0'
+                }
+            );
+            opt.process();
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+        assert.equal('~/foo version 1.1.0\n'
+            , txt
+            , 'Version text generated correctly'
+        );
     });
 });
 
