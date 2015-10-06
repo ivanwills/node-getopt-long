@@ -16,6 +16,11 @@ var test_data = [
         help  : '  -l --long-option\n                The long argument\n'
     },
     {
+        name  : 'Simple long borderline help',
+        config: ['long|long-opti|l', {description: 'The long argument'}],
+        help  : '  -l --long-opti\n                The long argument\n'
+    },
+    {
         name  : 'long option only help',
         config: ['long', {description: 'Only long argument'}],
         help  : '     --long     Only long argument\n'
