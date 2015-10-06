@@ -2,7 +2,7 @@
     "author"     : "Ivan Wills <ivan.wills@gmail.com>",
     "name"       : "node-getopt-long",
     "description": "Sophisticated command line argument parser",
-    "version"    : "0.3.0",
+    "version"    : "0.3.1",
     "license"    : "GPL-3.0+",
     "keywords"   : ["commandline", "argument", "passing"],
     "node"       : ">=0.10",
