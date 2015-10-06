@@ -165,9 +165,14 @@ _.each(test_data, function(data) {
             it(test.name, function() {
                 var error, opt, result;
                 try {
+                    test.argv.unshift('node', 'test');
+                    if (data.config) {
+                        data.config.argv = test.argv;
+                    }
+                    else {
+                        process.argv = test.argv;
+                    }
                     opt = getoptLong.configure(data.args, data.config);
-                    process.argv = test.argv;
-                    process.argv.unshift('node', 'test');
                     if (test.hasOwnProperty('extra')) {
                         test.extra.unshift('node', 'test');
                     }
@@ -190,7 +195,11 @@ _.each(test_data, function(data) {
                     assert.deepEqual(test.params, result, 'Get the expected params set ('+JSON.stringify(test.params)+' vs '+JSON.stringify(result)+')');
                 }
                 if (test.extra) {
-                    assert.deepEqual(test.extra, process.argv, 'Get the expected leftover arguments set');
+                    assert.deepEqual(
+                        test.extra,
+                        data.config ? opt.argv : process.argv,
+                        'Get the expected leftover arguments set'
+                    );
                 }
             });
         });
