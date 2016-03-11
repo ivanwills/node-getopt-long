@@ -66,6 +66,9 @@ Synopsis
 
     // Then process the arguments.
     var options = getopt.process();
+
+    // use a passed parameter value
+    console.log('arg = ' + options.arg);
 ```
 
 Description
