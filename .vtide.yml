@@ -1,0 +1,21 @@
+---
+count: 4
+default:
+  restart: 0
+  wait: 1
+editor:
+  files:
+    param:
+      - lib/getopt-long-param.js
+      - test/param-help.js
+      - test/param.js
+    opt:
+      - lib/getopt-long.js
+      - test/options-help.js
+      - test/options.js
+name: node-getopt-long
+terminals:
+  2:
+    edit: param
+  3:
+    edit: opt
