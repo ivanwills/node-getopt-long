@@ -15,6 +15,12 @@ editor:
       - test/options.js
 name: node-getopt-long
 terminals:
+  1:
+    split: H
+  1a:
+    restart: 1
+    wait: 0
+    command: gulp
   2:
     edit: param
   3:
