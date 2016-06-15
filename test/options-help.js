@@ -17,6 +17,7 @@ var test_data = [
             + ' Options:\n'
             + '  -l --long     Long message\n'
             + '     --help     Show this help message\n'
+            + '     --version  Show the version of this command\n'
     },
     {
         name  : 'Specify command name',
@@ -35,6 +36,7 @@ var test_data = [
             + ' Options:\n'
             + '  -l --long     Long message\n'
             + '     --help     Show this help message\n'
+            + '     --version  Show the version of this command\n'
     },
     {
         name  : 'Specify help suffix',
@@ -53,6 +55,7 @@ var test_data = [
             + ' Options:\n'
             + '  -l --long     Long message\n'
             + '     --help     Show this help message\n'
+            + '     --version  Show the version of this command\n'
             + '\n'
             + ' Eg test --long\n'
     },
@@ -73,6 +76,7 @@ var test_data = [
             + ' Options:\n'
             + '  -l --long     Long message\n'
             + '     --help     Show this help message\n'
+            + '     --version  Show the version of this command\n'
     },
     {
         name  : 'Specify command version in help',
@@ -240,6 +244,7 @@ describe('Help with object prototype extras', function() {
             + ' Options:\n'
             + '  -l --long     Long message\n'
             + '     --help     Show this help message\n'
+            + '     --version  Show the version of this command\n'
             , opt.help()
             , 'Help text generated correctly'
         );
