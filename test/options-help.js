@@ -11,7 +11,8 @@ var test_data = [
             ],
             {}
         ],
-        help: '  test\n'
+        ARGV: ['gulp', 'test', '--help'],
+        help: '  gulp\n'
             + '\n'
             + ' Options:\n'
             + '  -l --long     Long message\n'
@@ -126,8 +127,13 @@ describe('Full help', function() {
     _.each(test_data, function(test) {
         it(test.name, function() {
             var obj, opt;
-            process.argv = test.argv ? test.argv : [];
-            process.argv.unshift('node', 'test');
+            if (test.ARGV) {
+                process.argv = test.ARGV;
+            }
+            else {
+                process.argv = test.argv ? test.argv : [];
+                process.argv.unshift('node', 'test');
+            }
             try {
                 obj = getoptLong.configure.apply(this, test.config);
                 opt = obj.process();
