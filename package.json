@@ -1,37 +1,41 @@
 {
-    "author"     : "Ivan Wills <ivan.wills@gmail.com>",
-    "name"       : "node-getopt-long",
-    "description": "Sophisticated command line argument parser",
-    "version"    : "0.3.1",
-    "license"    : "GPL-3.0+",
-    "keywords"   : ["commandline", "argument", "passing"],
-    "node"       : ">=0.10",
-    "bin"        : {},
-    "man"        : {},
-    "repository" : {
-        "type": "git",
-        "url" : "https://github.com/ivanwills/node-getopt-long.git"
-    },
-    "bugs":  "https://github.com/ivanwills/node-getopt-long/issues",
-    "dependencies": {
-        "underscore"    : "*"
-    },
-    "devDependencies": {
-        "assert"        : "*",
-        "coveralls"     : "*",
-        "gulp"          : "*",
-        "gulp-istanbul" : "*",
-        "gulp-jshint"   : "*",
-        "gulp-mocha"    : "*",
-        "gulp-sonar"    : "*",
-        "gulp-util"     : "*"
-    },
-    "optionalDependencies": {},
-    "readmeFilename": "README.md",
-    "scripts": {
-        "test": "gulp test"
-    },
-    "engines": {
-        "node": "*"
-    }
+  "author": "Ivan Wills <ivan.wills@gmail.com>",
+  "name": "node-getopt-long",
+  "description": "Sophisticated command line argument parser",
+  "version": "0.3.2",
+  "license": "GPL-3.0+",
+  "keywords": [
+    "commandline",
+    "argument",
+    "passing"
+  ],
+  "node": ">=0.10",
+  "bin": {},
+  "man": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivanwills/node-getopt-long.git"
+  },
+  "bugs": "https://github.com/ivanwills/node-getopt-long/issues",
+  "dependencies": {
+    "underscore": "*"
+  },
+  "devDependencies": {
+    "assert": "*",
+    "coveralls": "*",
+    "gulp": "*",
+    "gulp-istanbul": "*",
+    "gulp-jshint": "*",
+    "gulp-mocha": "*",
+    "gulp-sonar": "*",
+    "gulp-util": "*"
+  },
+  "optionalDependencies": {},
+  "readmeFilename": "README.md",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "engines": {
+    "node": "*"
+  }
 }
