@@ -28,7 +28,8 @@
     "gulp-jshint": "*",
     "gulp-mocha": "*",
     "gulp-sonar": "*",
-    "gulp-util": "*"
+    "gulp-util": "*",
+    "jshint": "^2.9.3"
   },
   "optionalDependencies": {},
   "readmeFilename": "README.md",
