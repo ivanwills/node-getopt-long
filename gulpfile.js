@@ -7,13 +7,13 @@ var jshint   = require('gulp-jshint');
 var sonar    = require('gulp-sonar');
 var gutil    = require('gulp-util');
 
-gulp.task('lint', function() {
+gulp.task('lint', gulp.series(function() {
     return gulp.src('./lib/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
-});
+}));
 
-gulp.task('test', function() {
+gulp.task('test', gulp.series(function() {
     return gulp.src(['lib/*.js'])
         .pipe(istanbul())
         .pipe(istanbul.hookRequire())
@@ -23,9 +23,9 @@ gulp.task('test', function() {
                 .pipe(istanbul.writeReports())
                 .on('error', gutil.log);
         });
-});
+}));
 
-gulp.task('sonar', function () {
+gulp.task('sonar', gulp.series(function () {
     var options = {
         sonar: {
             host: {
@@ -55,10 +55,10 @@ gulp.task('sonar', function () {
     return gulp.src('lib/getopt-long.js', { read: false })
         .pipe(sonar(options))
         .on('error', gutil.log);
-});
+}));
 
-gulp.task('watch', function() {
+gulp.task('watch', gulp.series(function() {
     gulp.watch(['lib/*.js', 'test/*.js'], ['lint', 'test']);
-});
-gulp.task('quality', ['lint', 'test', 'sonar']);
-gulp.task('default', ['lint', 'test', 'watch']);
+}));
+gulp.task('quality', gulp.series('lint', 'test', 'sonar'));
+gulp.task('default', gulp.series('lint', 'test', 'watch'));
