@@ -2,10 +2,8 @@ language: node_js
 env: CI=true
 sudo: false
 node_js:
-    - '0.10'
-    - '0.12'
-    - '4.2'
-    - '6.5'
+    - '8.16'
+    - '10.16'
 after_script:
     - gulp test
 after_success: ./node_modules/.bin/coveralls --verbose < coverage/lcov.info
