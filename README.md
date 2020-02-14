@@ -16,6 +16,8 @@ This documentation refers to node-getopt-long version 0.1.2
 Synopsis
 ========
 
+Full detailed example:
+
 ```js
     var options = require('node-getopt-long').options([
         ['arg|a',       'Simple true argument'],
@@ -70,6 +72,14 @@ Synopsis
     // use a passed parameter value
     console.log('arg = ' + options.arg);
 ```
+
+Quick examples:
+
+```js
+    var options = require('node-getopt-long').options([
+      ['flag|g', 'Flag for something'],
+      ['
+    ]);
 
 Description
 ===========
