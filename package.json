@@ -34,7 +34,13 @@
   "optionalDependencies": {},
   "readmeFilename": "README.md",
   "scripts": {
-    "test": "gulp test"
+    "lint":    "gulp lint",
+    "test":    "gulp test",
+    "sonar":   "gulp sonar",
+    "watch":   "gulp watch",
+    "quality": "gulp quality",
+    "start":   "gulp"
+
   },
   "engines": {
     "node": "*"
