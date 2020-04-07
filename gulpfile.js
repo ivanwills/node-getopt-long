@@ -58,7 +58,7 @@ gulp.task('sonar', gulp.series(function () {
 }));
 
 gulp.task('watch', gulp.series(function() {
-    gulp.watch(['lib/*.js', 'test/*.js'], ['lint', 'test']);
+    gulp.watch(['lib/*.js', 'test/*.js'], gulp.series(['lint', 'test']));
 }));
 gulp.task('quality', gulp.series('lint', 'test', 'sonar'));
 gulp.task('default', gulp.series('lint', 'test', 'watch'));
