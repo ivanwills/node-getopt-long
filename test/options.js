@@ -130,6 +130,37 @@ var test_data = [
                 params: { long: 'Long', other: 3 }
             }
         ],
+    },
+    {
+        'name'  : 'Sub command values',
+        'args'  : [
+            ['long|l=s', {description: 'A long named option'}],
+            ['other|o=i', {description: 'An other named option'}],
+            ['verbose|v+', 'Verbose option that might be supplied by sub-command'],
+        ],
+        'config' : {
+            subCommand: true,
+        },
+        'cmdline': [
+            {
+                name  : 'No sub-command passed',
+                argv  : ['-v'],
+                extra : [],
+                params: { verbose: 1 }
+            },
+            {
+                name  : 'sub-command passed',
+                argv  : ['-v', 'sub'],
+                extra : ['sub'],
+                params: { verbose: 1 }
+            },
+            {
+                name  : 'sub-command passed with extra verbose',
+                argv  : ['-v', 'sub', '-v'],
+                extra : ['sub', '-v'],
+                params: { verbose: 1 }
+            }
+        ],
     }
 ];
 
