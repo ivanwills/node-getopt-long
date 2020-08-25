@@ -2,7 +2,7 @@
   "author": "Ivan Wills <ivan.wills@gmail.com>",
   "name": "node-getopt-long",
   "description": "Sophisticated command line argument parser",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "license": "GPL-3.0+",
   "keywords": [
     "commandline",
@@ -34,13 +34,12 @@
   "optionalDependencies": {},
   "readmeFilename": "README.md",
   "scripts": {
-    "lint":    "gulp lint",
-    "test":    "gulp test",
-    "sonar":   "gulp sonar",
-    "watch":   "gulp watch",
+    "lint": "gulp lint",
+    "test": "gulp test",
+    "sonar": "gulp sonar",
+    "watch": "gulp watch",
     "quality": "gulp quality",
-    "start":   "gulp"
-
+    "start": "gulp"
   },
   "engines": {
     "node": "*"
