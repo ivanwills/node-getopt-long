@@ -16,6 +16,15 @@ This documentation refers to node-getopt-long version 0.1.2
 Synopsis
 ========
 
+Quick examples:
+
+```js
+    var options = require('node-getopt-long').options([
+      ['flag|g', 'Flag for something'],
+      ['
+    ]);
+```
+
 Full detailed example:
 
 ```js
@@ -72,14 +81,6 @@ Full detailed example:
     // use a passed parameter value
     console.log('arg = ' + options.arg);
 ```
-
-Quick examples:
-
-```js
-    var options = require('node-getopt-long').options([
-      ['flag|g', 'Flag for something'],
-      ['
-    ]);
 
 Description
 ===========
@@ -177,6 +178,7 @@ There are a number of configuration options supported
 * defaults - Object containing default values for parameters
 * helpPrefix - Text to be put at the front of help message
 * helpSuffix - Text to be put at the end of the help message
+* subCommand - Flag, when set true processing of arguments will stop at the first non-parameter argument (this allows parameters to be passed on to sub-command)
 * ignoreCase - TODO - choose weather arguments should be case sensitive or not (default is true)
 * bundle - TODO - allow bundling of short arguments (default is true)
 
