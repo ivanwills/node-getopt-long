@@ -51,6 +51,11 @@ var test_data = [
         help  : '  -s[=]0.0..9.0 Only short argument\n'
     },
     {
+        name  : 'Negatable help',
+        config: ['long|l!', {description: 'The long argument'}],
+        help  : '  -l --long     The long argument\n     --no-long  Turn off this option\n'
+    },
+    {
         name  : 'short float only help',
         config: ['s=i', {description: 'Only short argument', paramName: '0..9'}],
         help  : '  -s[=]0..9     Only short argument\n'
