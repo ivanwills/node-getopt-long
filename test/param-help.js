@@ -59,6 +59,11 @@ var test_data = [
         name  : 'short float only help',
         config: ['s=i', {description: 'Only short argument', paramName: '0..9'}],
         help  : '  -s[=]0..9     Only short argument\n'
+    },
+    {
+        name  : 'list of values',
+        config: ['s=s', {description: 'Only short argument', test: ['ALL', 'OPEN', 'MERGED', 'DECLINED'],}],
+        help  : '  -s[=]ALL|OPEN|MERGED|DECLINED\n                Only short argument\n'
     }
 ];
 
