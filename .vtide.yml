@@ -6,11 +6,11 @@ default:
 editor:
   files:
     param:
-      - lib/getopt-long-param.js
+      - src/getopt-long-param.mjs
       - test/param-help.js
       - test/param.js
     opt:
-      - lib/getopt-long.js
+      - src/getopt-long.mjs
       - test/options-help.js
       - test/options.js
 name: node-getopt-long
