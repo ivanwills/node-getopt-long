@@ -82,7 +82,7 @@ var test_data = [
         ],
         'data': [
             { arg: '--long=val', match: 1, value: 'val'  },
-            { arg: '-l'        , match: 0, value: null, error: '--long requires a value\n' }
+            { arg: '-l'        , match: 0, value: null, error: 'Error: --long requires a value\n' }
         ]
     },
     {
@@ -96,7 +96,7 @@ var test_data = [
         ],
         'data': [
             { arg: '--long=val', match: 1, value: 'val'  },
-            { arg: '-l'        , match: 0, value: null, error: '--long requires a value\n' }
+            { arg: '-l'        , match: 0, value: null, error: 'Error: --long requires a value\n' }
         ]
     },
     {
@@ -109,10 +109,10 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            { arg: '--long=val', match: 0, value: null, error: '--long must be an integer\n' },
+            { arg: '--long=val', match: 0, value: null, error: 'Error: --long must be an integer\n' },
             { arg: '--long=7'  , match: 1, value: 7    },
             { arg: '--long=0'  , match: 1, value: 0    },
-            { arg: '-l'        , match: 0, value: null, error: '--long requires a value\n' }
+            { arg: '-l'        , match: 0, value: null, error: 'Error: --long requires a value\n' }
         ]
     },
     {
@@ -125,11 +125,11 @@ var test_data = [
             [ 'short',     [ 'l' ]         ]
         ],
         'data': [
-            { arg: '--long=val'   , match: 0, value: null, error: '--long must be an number\n' },
+            { arg: '--long=val'   , match: 0, value: null, error: 'Error: --long must be an number\n' },
             { arg: '--long=7.1'   , match: 1, value: 7.1  },
             { arg: '--long=0'     , match: 1, value: 0    },
             { arg: ['--long', '0'], match: 2, value: 0    },
-            { arg: '-l'           , match: 0, value: null, error: '--long requires a value\n' }
+            { arg: '-l'           , match: 0, value: null, error: 'Error: --long requires a value\n' }
         ]
     },
     {
@@ -150,10 +150,10 @@ var test_data = [
             ['name', 'long'],
         ],
         'data': [
-            { arg: '--long=val', match: 0, value: null, error: '--long must be an integer\n' },
+            { arg: '--long=val', match: 0, value: null, error: 'Error: --long must be an integer\n' },
             { arg: '--long=7'  , match: 1, value: 7    },
-            { arg: '--long=-7' , match: false, value: null, error: '--long must be a positive integer\n' },
-            { arg: '-l'        , match: 0, value: null, error: '--long requires a value\n' }
+            { arg: '--long=-7' , match: false, value: null, error: 'Error: --long must be a positive integer\n' },
+            { arg: '-l'        , match: 0, value: null, error: 'Error: --long requires a value\n' }
         ]
     },
     {
@@ -167,13 +167,13 @@ var test_data = [
             [ 'value',     [     ]         ]
         ],
         'data': [
-            { arg: '--long=val'                 , match: 0, value: null, error: '--long must be an integer\n' },
+            { arg: '--long=val'                 , match: 0, value: null, error: 'Error: --long must be an integer\n' },
             { arg: '--long=7'                   , match: 1, value: [7]    },
             { arg: '--long=0'                   , match: 1, value: [0]    },
             { arg: ['--long=0'  , '--long=1']   , match: 2, value: [0,1]  },
             { arg: ['--long','9', '--long','-1'], match: 4, value: [9,-1] },
             { arg: '-l4'                        , match: 1, value: [4]    },
-            { arg: '-l'                         , match: 0, value: null, error: '--long requires a value\n' }
+            { arg: '-l'                         , match: 0, value: null, error: 'Error: --long requires a value\n' }
         ]
     },
     {
@@ -188,12 +188,12 @@ var test_data = [
             [ 'value'    , {     }         ]
         ],
         'data': [
-            { arg: '--long=val'                              , match: 0, value: null, error: '--long must be an integer\n' },
+            { arg: '--long=val'                              , match: 0, value: null, error: 'Error: --long must be an integer\n' },
             { arg: '--long=val=7'                            , match: 1, value: {val: 7}   },
             { arg: '--long=val=0'                            , match: 1, value: {val: 0}   },
             { arg: ['--long=first=0'  , '--long=second=1'   ], match: 2, value: {first: 0, second: 1} },
             { arg: ['--long','first=9', '--long','second=-1'], match: 4, value: {first: 9, second:-1} },
-            { arg: '-l'                                      , match: 0, value: null, error: '--long requires a value\n' }
+            { arg: '-l'                                      , match: 0, value: null, error: 'Error: --long requires a value\n' }
         ]
     },
     {
@@ -215,7 +215,41 @@ var test_data = [
         ],
         'data': [
             { arg: '--long=val=7' , match: 1, value: {val: 7}         },
-            { arg: '--long=val=-1', match: 0, error: 'No negatives\n' }
+            { arg: '--long=val=-1', match: 0, error: 'Error: No negatives\n' }
+        ]
+    },
+    {
+        'name': 'Parameter with key test regex',
+        'args': [
+            'long|l=s%',
+            {
+                test       : /^(\d+)$/,
+                description: 'A long option named integers'
+            }
+        ],
+        'this': [
+            [ 'name', 'long' ]
+        ],
+        'data': [
+            { arg: '--long=val=7'   , match: 1, value: {val: 7}      },
+            { arg: '--long=thing=-1', match: 0, error: "Error: The value -1 didn't match /^(\\d+)$/!" }
+        ]
+    },
+    {
+        'name': 'Parameter with key test regex',
+        'args': [
+            'long|l=s',
+            {
+                test       : /^(\d+)$/,
+                description: 'A long option named integers'
+            }
+        ],
+        'this': [
+            [ 'name', 'long' ]
+        ],
+        'data': [
+            { arg: '--long 7' , match: 1, value: {val: 7}      },
+            { arg: '--long -1', match: 0, error: "Error: The value -1 didn't match /^(\\d+)$/!" }
         ]
     },
     {
@@ -237,7 +271,7 @@ var test_data = [
         ],
         'data': [
             { arg: '--long=val=7'   , match: 1, value: {val: 7}      },
-            { arg: '--long=thing=-1', match: 0, error: 'No things\n' }
+            { arg: '--long=thing=-1', match: 0, error: 'Error: No things\n' }
         ]
     },
     {
@@ -256,7 +290,7 @@ var test_data = [
             { arg: '--long=yes'  , match: 1, value: 'yes'  },
             { arg: '--long=auto' , match: 1, value: 'auto' },
             { arg: '--long=no'   , match: 1, value: 'no'   },
-            { arg: '--long=other', match: 0, error: '--long must be one of yes, auto, no\n' }
+            { arg: '--long=other', match: 0, error: 'Error: --long must be one of yes, auto, no\n' }
         ]
     },
     {
@@ -303,7 +337,7 @@ _.each(test_data, function(data) {
                         error = false;
                     }
                     catch (e) {
-                        error = e;
+                        error = e.toString();
                     }
                     assert(!error, 'No error creating new parameter');
                     assert.deepEqual(param[test[0]], test[1], test[2]);
@@ -336,7 +370,7 @@ _.each(test_data, function(data) {
                       error = false;
                   }
                   catch (e) {
-                      error = e;
+                      error = e.toString();
                   }
                   if (!test.error) {
                       if (match !== test.match || error) {

@@ -82,7 +82,7 @@ var test_data = [
             {
                 name  : 'Error on unknown arg',
                 argv  : ['-q'],
-                error : 'Unknown argument -q\n'
+                error : 'Error: Unknown argument -q\n'
             },
             {
                 name  : 'terminate on --',
@@ -211,7 +211,7 @@ _.each(test_data, function(data) {
                     error = false;
                 }
                 catch (e) {
-                    error = e;
+                    error = e.toString();
                 }
                 if (error && !test.error) {
                     console.log({error: error, opt: opt.parameters, params: result, argv: process.argv, test: test});
