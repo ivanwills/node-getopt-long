@@ -1,8 +1,9 @@
 /* global require, describe, it */
 
-var assert = require('assert');
-var Param = require('../lib/getopt-long-param.js');
-var _ = require('underscore');
+import { describe, it, beforeEach, afterEach } from 'vitest';
+import assert from 'assert';
+import Param from '../lib/getopt-long-param.js';
+import _ from 'underscore';
 
 var test_data = [
     {

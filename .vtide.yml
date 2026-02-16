@@ -7,12 +7,12 @@ editor:
   files:
     param:
       - lib/getopt-long-param.js
-      - test/param-help.js
-      - test/param.js
+      - test/param-help..spec.js
+      - test/param..spec.js
     opt:
       - lib/getopt-long.js
-      - test/options-help.js
-      - test/options.js
+      - test/options-help..spec.js
+      - test/options..spec.js
 name: node-getopt-long
 terminals:
   1:
