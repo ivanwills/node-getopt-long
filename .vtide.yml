@@ -1,18 +1,18 @@
 ---
 count: 4
 default:
-  restart: 0
+  restart: 1
   wait: 1
 editor:
   files:
     param:
       - src/getopt-long-param.mjs
-      - test/param-help.js
-      - test/param.js
+      - src/__tests__/param-help.test.mjs
+      - src/__tests__/param.test.mjs
     opt:
       - src/getopt-long.mjs
-      - test/options-help.js
-      - test/options.js
+      - src/__tests__/options-help.test.mjs
+      - src/__tests__/options.test.mjs
 name: node-getopt-long
 terminals:
   1:
@@ -20,7 +20,11 @@ terminals:
   1a:
     restart: 1
     wait: 0
-    command: gulp
+    command: npm test
+    watch:
+      - package.json
+      - src/*
+      - src/*/*
   2:
     edit: param
   3:

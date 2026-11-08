@@ -1,15 +1,16 @@
-/* global require, process */
-var Param = require('../lib/getopt-long-param.js');
-var _ = require('underscore');
+import { readFileSync } from 'node:fs';
+
+import { GetoptLongParam } from './getopt-long-param.mjs';
 
 var clone = function (obj) {
-    var cloned = {};
-    for (var i in obj) {
-        if (obj.hasOwnProperty(i)) {
-            cloned[i] = obj[i];
-        }
+  var cloned = {};
+
+  for (var i in obj) {
+    if (obj.hasOwnProperty(i)) {
+      cloned[i] = obj[i];
     }
-    return cloned;
+  }
+  return cloned;
 };
 
 /**
@@ -19,44 +20,45 @@ var clone = function (obj) {
  * Object inspirecd by Perl's Getopt::Long library
  */
 var getoptLong = function (params, config) {
-    this.parameters = [];
+  this.parameters = [];
 
-    if (params) {
-        if (config !== undefined) {
-            _.each(config, function (value, key) {
-                this[key] = value;
-            }.bind(this));
-        }
-
-        if (this.name === null) {
-            this.name = process.argv[0].match(/node/) ? process.argv[1].replace(/^.*\//, '') : process.argv[0];
-        }
-
-        if (!this.commandVersion) {
-            // try to get command version from package.json if it exists
-            try {
-                var fs = require('fs');
-                var pack = JSON.parse(fs.readFileSync('package.json', 'UTF-8'));
-                if (pack.version) {
-                    this.commandVersion = pack.version;
-                }
-            }
-            catch (e) {
-            }
-        }
-
-        this.configure(params);
+  if (params) {
+    if (config !== undefined) {
+      Object.keys(config).forEach((key) => {
+        this[key] = config[key];
+      });
     }
+
+    if (this.name === null) {
+      this.name = process.argv[0].match(/node/)
+        ? process.argv[1].replace(/^.*\//, '')
+        : process.argv[0];
+    }
+
+    if (!this.commandVersion) {
+      // try to get command version from package.json if it exists
+      try {
+        var pack = JSON.parse(readFileSync('package.json', 'UTF-8'));
+        if (pack.version) {
+          this.commandVersion = pack.version;
+        }
+      } catch {
+        // No package.json is available, so leave the version unset.
+      }
+    }
+
+    this.configure(params);
+  }
 };
 
 // record the version with the object
-getoptLong.prototype.VERSION    = '0.2.5';
+getoptLong.prototype.VERSION = '0.2.5';
 // ignore case of options as entered
 getoptLong.prototype.ignoreCase = true;
 // allow bundling of short arguments eg -v -e can be written as -ve
-getoptLong.prototype.bundle     = true;
+getoptLong.prototype.bundle = true;
 // use this as the script's name
-getoptLong.prototype.name       = null;
+getoptLong.prototype.name = null;
 // append this text to the end of help
 getoptLong.prototype.helpSuffix = null;
 // append this text before options
@@ -78,52 +80,57 @@ getoptLong.prototype.subCommand = false;
  * configures the accepted command line parameters
  */
 getoptLong.prototype.configure = function (parameters) {
-    var self = this;
+  var self = this;
 
-    for (var i in parameters) {
-        if (parameters.hasOwnProperty(i)) {
-            var parameter = parameters[i];
-            var options = typeof parameter[1] === 'object' ? clone(parameter[1]) : { description: parameter[1] };
-            options.parent = this;
-            var param = new Param.param([parameter[0], options]);
-            this.parameters.push(param);
-        }
+  for (var i in parameters) {
+    if (parameters.hasOwnProperty(i)) {
+      var parameter = parameters[i];
+      var options =
+        typeof parameter[1] === 'object'
+          ? clone(parameter[1])
+          : { description: parameter[1] };
+      options.parent = this;
+      var param = new GetoptLongParam([parameter[0], options]);
+      this.parameters.push(param);
     }
+  }
 
-    // Extra default parameters
-    // --help
+  // Extra default parameters
+  // --help
+  this.parameters.push(
+    new GetoptLongParam([
+      'help',
+      {
+        parent: this,
+        description: 'Show this help message',
+        on: function () {
+          process.stdout.write(self.help());
+          process.exit(1);
+        },
+      },
+    ]),
+  );
+
+  // --version if this.commandVersion set
+  if (this.commandVersion) {
     this.parameters.push(
-        new Param.param([
-            'help',
-            {
-                parent     : this,
-                description: 'Show this help message',
-                on         : function () {
-                    process.stdout.write(self.help());
-                    process.exit(1);
-                }
-            }
-        ])
+      new GetoptLongParam([
+        'version',
+        {
+          parent: this,
+          description: 'Show the version of this command',
+          on: function () {
+            process.stdout.write(
+              this.name + ' version ' + this.commandVersion + '\n',
+            );
+            process.exit(0);
+          }.bind(this),
+        },
+      ]),
     );
+  }
 
-    // --version if this.commandVersion set
-    if (this.commandVersion) {
-        this.parameters.push(
-            new Param.param([
-                'version',
-                {
-                    parent: this,
-                    description: 'Show the version of this command',
-                    on: function() {
-                        process.stdout.write(this.name + ' version ' + this.commandVersion + '\n');
-                        process.exit(0);
-                    }.bind(this)
-                }
-            ])
-        );
-    }
-
-    return this;
+  return this;
 };
 
 /**
@@ -132,79 +139,75 @@ getoptLong.prototype.configure = function (parameters) {
  * configures the accepted command line parameters
  */
 getoptLong.prototype.process = function () {
-    var params = _.clone(this.defaults),
-        extra = [],
-        type = this.argv !== null ? 'local' : 'process',
-        argv = this.argv !== null ? this.argv : process.argv;
+  var params = { ...this.defaults },
+    extra = [],
+    type = this.argv !== null ? 'local' : 'process',
+    argv = this.argv !== null ? this.argv : process.argv;
 
-    for (var j = 0; j < this.extraCommandArgs; j++) {
+  for (var j = 0; j < this.extraCommandArgs; j++) {
+    extra.push(argv.shift());
+  }
+
+  try {
+    while (argv.length) {
+      // store all non argument parameters in extra array
+      if (!argv[0].match(/^-/)) {
         extra.push(argv.shift());
-    }
-
-    try {
-        while (argv.length) {
-            // store all non argument parameters in extra array
-            if (!argv[0].match(/^-/)) {
-                extra.push(argv.shift());
-                if (this.subCommand) {
-                    extra.push.apply(extra, argv);
-                    break;
-                }
-                continue;
-            }
-
-            // check if we find argument terminator
-            if (argv[0] === '--') {
-                argv.shift();
-                extra.push.apply(extra, argv);
-                // stop processing
-                break;
-            }
-
-            var matched = false;
-            for (var i = 0; i < this.parameters.length; i++) {
-                var param = this.parameters[i];
-                var match = param.process.apply(param, argv);
-                if (!match) {
-                    // skip non matching parameters
-                    continue;
-                }
-
-                params[ param.name ] = param.value;
-                if (match > 1) {
-                    argv.shift();
-                    argv.shift();
-                    matched = true;
-                }
-                else if (match < 0) {
-                    argv[0] = argv[0].replace(/^-./, '-');
-                    matched = true;
-                }
-                else {
-                    argv.shift();
-                    matched = true;
-                }
-
-                i = this.parameters.length;
-            }
-
-            this._matched(matched, argv[0]);
+        if (this.subCommand) {
+          extra.push.apply(extra, argv);
+          break;
         }
-    }
-    catch (error) {
-        process.stderr.write(error);
-        process.stdout.write(this.help());
-        process.exit(2);
-    }
+        continue;
+      }
 
-    if (type === 'local') {
-        this.argv = extra;
-    }
-    else {
-        process.argv = extra;
-    }
+      // check if we find argument terminator
+      if (argv[0] === '--') {
+        argv.shift();
+        extra.push.apply(extra, argv);
+        // stop processing
+        break;
+      }
 
-    return params;
+      var matched = false;
+      for (var i = 0; i < this.parameters.length; i++) {
+        var param = this.parameters[i];
+        var match = param.process.apply(param, argv);
+        if (!match) {
+          // skip non matching parameters
+          continue;
+        }
+
+        params[param.name] = param.value;
+        if (match > 1) {
+          argv.shift();
+          argv.shift();
+          matched = true;
+        } else if (match < 0) {
+          argv[0] = argv[0].replace(/^-./, '-');
+          matched = true;
+        } else {
+          argv.shift();
+          matched = true;
+        }
+
+        i = this.parameters.length;
+      }
+
+      this._matched(matched, argv[0]);
+    }
+  } catch (error) {
+    process.stderr.write(error);
+    process.stdout.write(this.help());
+    process.exit(2);
+  }
+
+  if (type === 'local') {
+    this.argv = extra;
+  } else {
+    process.argv = extra;
+  }
+
+  return params;
 };
 
 /**
@@ -213,9 +216,9 @@ getoptLong.prototype.process = function () {
  * Throws error if param has not matched its definition
  */
 getoptLong.prototype._matched = function (matched, param) {
-    if (!matched) {
-        throw 'Unknown argument ' + param + '\n';
-    }
+  if (!matched) {
+    throw 'Unknown argument ' + param + '\n';
+  }
 };
 
 /**
@@ -224,35 +227,36 @@ getoptLong.prototype._matched = function (matched, param) {
  * configures the accepted command line parameters
  */
 getoptLong.prototype.help = function () {
-    var help = '  ' + this.name + '\n';
+  var help = '  ' + this.name + '\n';
 
-    if (this.helpPrefix) {
-        help = help + this.helpPrefix;
+  if (this.helpPrefix) {
+    help = help + this.helpPrefix;
+  } else {
+    help = help + '\n';
+  }
+
+  help = help + ' Options:\n';
+
+  for (var i in this.parameters) {
+    if (typeof this.parameters[i].help === 'function') {
+      help = help + this.parameters[i].help();
     }
-    else {
-        help = help + '\n';
-    }
+  }
 
-    help = help + ' Options:\n';
+  if (this.helpSuffix) {
+    help = help + '\n' + this.helpSuffix + '\n';
+  }
 
-    for (var i in this.parameters) {
-        if (typeof this.parameters[i].help === 'function') {
-            help = help + this.parameters[i].help();
-        }
-    }
-
-    if (this.helpSuffix) {
-        help = help + '\n' + this.helpSuffix + '\n';
-    }
-
-    return help;
+  return help;
 };
 
-var exports;
-exports.get = getoptLong;
-exports.configure = function (params, config) {
-    return new getoptLong(params, config);
+const get = getoptLong;
+const configure = function (params, config) {
+  return new getoptLong(params, config);
 };
-exports.options = function (params, config) {
-    return new getoptLong(params, config).process();
+const options = function (params, config) {
+  return new getoptLong(params, config).process();
 };
+
+export { get, configure, options, getoptLong };
+export default { get, configure, options };
