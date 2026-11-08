@@ -1,8 +1,9 @@
 import assert from 'node:assert';
-import { GetoptLongParam } from '../getopt-long-param.mjs';
+import { describe, it } from '@jest/globals';
+import { GetoptLongParam } from '../getopt-long-param';
 import _ from 'underscore';
 
-var test_data = [
+var test_data: any[] = [
   {
     name: 'Simple help',
     config: ['long|l', { description: 'The long argument1' }],
@@ -75,7 +76,7 @@ var test_data = [
 ];
 
 describe('Basic help', function () {
-  _.each(test_data, function (test) {
+  _.each(test_data, function (test: any) {
     it(test.name, function () {
       var param = new GetoptLongParam(test.config);
 

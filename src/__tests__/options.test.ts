@@ -1,8 +1,9 @@
 import _ from 'underscore';
 import assert from 'node:assert';
-import getoptLong from '../getopt-long.mjs';
+import { afterEach, beforeEach, describe, it } from '@jest/globals';
+import getoptLong from '../getopt-long';
 
-var test_data = [
+var test_data: any[] = [
   {
     name: 'Simple',
     args: [['long|l', 'A long named option1']],
@@ -161,31 +162,31 @@ var test_data = [
   },
 ];
 
-_.each(test_data, function (data) {
+_.each(test_data, function (data: any) {
   describe(data.name, function () {
-    var exit = process.exit,
-      outWrite = process.stdout.write,
-      errWrite = process.stderr.write,
-      errText;
+    var exit: any = process.exit,
+      outWrite: any = process.stdout.write,
+      errWrite: any = process.stderr.write,
+      errText: any;
 
     beforeEach(function () {
       // hack in alt exit method for testing
-      process.exit = function () {};
-      process.stdout.write = function () {};
-      process.stderr.write = function (text) {
+      (process as any).exit = function () {};
+      (process.stdout as any).write = function () {};
+      (process.stderr as any).write = function (text: string) {
         errText = text;
       };
     });
     afterEach(function () {
       // restore real exit
-      process.exit = exit;
-      process.stdout.write = outWrite;
-      process.stderr.write = errWrite;
+      (process as any).exit = exit;
+      (process.stdout as any).write = outWrite;
+      (process.stderr as any).write = errWrite;
     });
 
-    _.each(data.cmdline, function (test) {
+    _.each(data.cmdline, function (test: any) {
       it(test.name, function () {
-        var error, opt, result;
+        var error: any, opt: any, result: any;
         try {
           test.argv.unshift('node', 'test');
           if (data.config) {
@@ -237,9 +238,9 @@ _.each(test_data, function (data) {
       });
     });
 
-    _.each(data.params, function (test) {
+    _.each(data.params, function (test: any) {
       it(test.name, function () {
-        var error, opt;
+        var error: any, opt: any;
         try {
           opt = getoptLong.options(data.args);
         } catch (e) {
@@ -264,8 +265,8 @@ _.each(test_data, function (data) {
 
 describe('Simplest usage', function () {
   it('use options', function () {
-    var opt = {},
-      error = false;
+    var opt: any = {},
+      error: any = false;
     try {
       process.argv = ['node', 'test', '--long'];
       opt = getoptLong.options([['long|l', 'Long options']], { defaults: {} });
@@ -279,15 +280,15 @@ describe('Simplest usage', function () {
 
 describe('Protections', function () {
   beforeEach(function () {
-    Array.prototype.junk = true;
-    Object.prototype.garbage = true;
+    (Array.prototype as any).junk = true;
+    (Object.prototype as any).garbage = true;
   });
   afterEach(function () {
-    delete Array.prototype.junk;
-    delete Object.prototype.junk;
+    delete (Array.prototype as any).junk;
+    delete (Object.prototype as any).junk;
   });
   it('not own properties ignored', function () {
-    var error = false;
+    var error: any = false;
     try {
       var opt = new getoptLong.get();
       opt.configure([['log|l', { description: 'long option' }]]);

@@ -4,9 +4,20 @@
   "description": "Sophisticated command line argument parser",
   "version": "0.5.1",
   "license": "GPL-3.0+",
-  "keywords": ["commandline", "argument", "passing"],
+  "keywords": [
+    "commandline",
+    "argument",
+    "passing"
+  ],
   "node": ">=0.10",
   "man": {},
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "type": "commonjs",
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ivanwills/node-getopt-long.git"
@@ -18,14 +29,16 @@
   "devDependencies": {
     "@babel/core": "^7.29.13",
     "@babel/preset-env": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
     "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.6",
+    "@types/underscore": "^1.13.0",
     "babel-jest": "^30.5.2",
     "eslint": "^10.14.0",
-    "eslint-plugin-jest": "^29.17.0",
-    "eslint-plugin-sonarjs": "^4.2.2",
     "globals": "^17.14.0",
     "jest": "^30.5.2",
-    "prettier": "^3.9.10"
+    "prettier": "^3.9.10",
+    "typescript": "^7.0.2"
   },
   "overrides": {
     "deepmerge": "4.1.2",
@@ -34,9 +47,12 @@
   },
   "readmeFilename": "README.md",
   "scripts": {
-    "lint": "eslint src/",
-    "lint-fix": "eslint --fix src/",
-    "test": "jest --coverage"
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "eslint index.js \"*.config.mjs\" && npm run typecheck",
+    "lint-fix": "eslint --fix index.js \"*.config.mjs\"",
+    "test": "jest --coverage",
+    "prepare": "npm run build"
   },
   "engines": {
     "node": "*"

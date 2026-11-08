@@ -1,8 +1,9 @@
 export default {
   testEnvironment: 'node',
-  testMatch: ['<rootDir>/src/__tests__/**/*.test.mjs'],
+  testMatch: ['<rootDir>/src/__tests__/**/*.test.ts'],
+  moduleFileExtensions: ['js', 'mjs', 'cjs', 'ts', 'json', 'node'],
   transform: {
-    '^.+\\.m?js$': [
+    '^.+\\.[cm]?[jt]s$': [
       'babel-jest',
       {
         presets: [
@@ -13,6 +14,7 @@ export default {
               modules: 'commonjs',
             },
           ],
+          '@babel/preset-typescript',
         ],
       },
     ],

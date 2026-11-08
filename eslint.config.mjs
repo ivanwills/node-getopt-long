@@ -1,5 +1,4 @@
 import js from '@eslint/js';
-import sonarjs from 'eslint-plugin-sonarjs';
 import globals from 'globals';
 
 export default [
@@ -7,14 +6,14 @@ export default [
     ignores: [
       'coverage/**',
       'node_modules/**',
-      'configs/jest.config.js',
+      'lib/**',
       'build/**',
       'tmp/**',
       '**/*orig.js',
+      '**/*.ts',
     ],
   },
   js.configs.recommended,
-  sonarjs.configs.recommended,
   {
     files: ['**/*.js', '**/*.mjs'],
     languageOptions: {
@@ -34,15 +33,6 @@ export default [
       'no-unused-vars': ['error', { caughtErrors: 'none' }],
       semi: [2, 'always'],
       'handle-callback-err': 0,
-      'sonarjs/class-name': 'off',
-      'sonarjs/cognitive-complexity': ['warn', 17],
-      'sonarjs/inverted-assertion-arguments': 'off',
-      'sonarjs/no-dead-store': 'off',
-      'sonarjs/no-empty-collection': 'warn',
-      'sonarjs/no-ignored-exceptions': 'off',
-      'sonarjs/no-nested-template-literals': 'off',
-      'sonarjs/single-char-in-character-classes': 'off',
-      'sonarjs/updated-loop-counter': 'off',
     },
   },
 ];

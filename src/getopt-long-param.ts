@@ -1,17 +1,40 @@
-function strSplit(str, match, limit) {
+export type ParamTest = (
+  value: any,
+  key: string | undefined,
+  parent: any,
+  self: GetoptLongParam,
+) => any;
+
+export interface ParamOptions {
+  parent?: any;
+  description?: string;
+  on?: (
+    value: any,
+    key: string | undefined,
+    parent: any,
+    self: GetoptLongParam,
+  ) => void;
+  test?: ParamTest | any[];
+  paramName?: string;
+  [key: string]: any;
+}
+
+export type ParamDetails = [string, ParamOptions];
+
+function strSplit(str: string, match: string, limit: number): string[] {
   let split = str.split(match);
-  let newSplit = [];
+  let newSplit: string[] = [];
   let i = 0;
 
   while (i < limit - 1) {
-    newSplit.push(split.shift());
+    newSplit.push(split.shift() as string);
     i++;
   }
   newSplit.push(split.join(match));
   return newSplit;
 }
 
-function padToOrNewLine(str, max) {
+function padToOrNewLine(str: string, max: number): string {
   if (str.length >= max) {
     return str + '\n' + padToOrNewLine('', max);
   }
@@ -21,14 +44,16 @@ function padToOrNewLine(str, max) {
   }
   return str;
 }
-const testInt = (value, key, parent, self) => {
+
+const testInt: ParamTest = (value, key, parent, self) => {
   if ('' + value === '' + parseInt(value, 10)) {
     return parseInt(value, 10);
   } else {
     throw '--' + self.name + ' must be an integer\n';
   }
 };
-const testFloat = (value, key, parent, self) => {
+
+const testFloat: ParamTest = (value, key, parent, self) => {
   if ('' + value === '' + parseFloat(value)) {
     return parseFloat(value);
   } else {
@@ -36,10 +61,26 @@ const testFloat = (value, key, parent, self) => {
   }
 };
 
-class GetoptLongParam {
+export class GetoptLongParam {
   //static VERSION = '0.4.0';
 
-  constructor(details) {
+  test: Array<ParamTest | any[]> = [];
+  possible: string[] = [];
+  short: string[] = [];
+  name = '';
+  value: any = null;
+  paramName: string | null = null;
+  negatable = false;
+  increment = false;
+  parameter = false;
+  autoNo = false;
+  parent: any;
+  description: string | undefined;
+  on?: ParamOptions['on'];
+  list?: boolean;
+  object?: boolean;
+
+  constructor(details: ParamDetails) {
     this.test = [];
     this.possible = [];
     this.short = [];
@@ -65,7 +106,7 @@ class GetoptLongParam {
     }
   }
 
-  arrayTest(values, value) {
+  arrayTest(values: any[], value: any): any {
     for (var i = 0; i < values.length; i++) {
       if (values[i] === value) {
         return value;
@@ -75,7 +116,7 @@ class GetoptLongParam {
     throw '--' + this.name + ' must be one of ' + values.join(', ') + '\n';
   }
 
-  setNames(spec) {
+  setNames(spec: string): void {
     var parts = spec.split(/(?=[!+=])/);
     var names = parts[0].split(/[|]/);
 
@@ -106,7 +147,7 @@ class GetoptLongParam {
     });
   }
 
-  setValueParam(parts) {
+  setValueParam(parts: string[]): void {
     this.parameter = true;
     var type = parts[1].substr(1);
 
@@ -137,16 +178,16 @@ class GetoptLongParam {
     }
   }
 
-  process(arg1, arg2) {
-    var value;
-    var key;
-    var possibleMatch = (name) => {
+  process(arg1: string, arg2?: string): number {
+    var value: any = undefined;
+    var key: string | undefined = undefined;
+    var possibleMatch = (name: string) => {
       if (this.parameter && arg1.match(/=/)) {
         return '--' + name === arg1.split(/=/, 2)[0];
       }
       return '--' + name === arg1;
     };
-    var shortMatch = (name) => {
+    var shortMatch = (name: string) => {
       return '-' + name === arg1.substr(0, 2);
     };
 
@@ -155,13 +196,13 @@ class GetoptLongParam {
         prev.push(cur);
       }
       return prev;
-    }, []).length;
+    }, [] as string[]).length;
     var short = this.short.reduce(function (prev, cur) {
       if (shortMatch(cur)) {
         prev.push(cur);
       }
       return prev;
-    }, []).length;
+    }, [] as string[]).length;
     var auto = this.autoNo ? arg1.match(/^-(\d+)$/) : false;
 
     if (long || short || auto) {
@@ -205,7 +246,7 @@ class GetoptLongParam {
           prev.push(cur);
         }
         return prev;
-      }, []).length
+      }, [] as string[]).length
     ) {
       this.value = false;
 
@@ -219,7 +260,14 @@ class GetoptLongParam {
     return 0;
   }
 
-  extractValue(key, value, short, auto, arg1, arg2) {
+  extractValue(
+    key: string | undefined,
+    value: any,
+    short: number,
+    auto: RegExpMatchArray | false | null,
+    arg1: string,
+    arg2?: string,
+  ): any[] {
     if (auto) {
       return [auto[1]];
     } else if (arg1.match(/=/)) {
@@ -233,28 +281,28 @@ class GetoptLongParam {
     throw '--' + this.name + ' requires a value\n';
   }
 
-  setValue(key, value) {
+  setValue(key: string | undefined, value: any): void {
     if (this.list) {
       this.value.push(value);
     } else if (this.object) {
-      this.value[key] = value;
+      this.value[key as string] = value;
     } else {
       this.value = value;
     }
   }
 
-  runTests(key, value) {
+  runTests(key: string | undefined, value: any): void {
     // run any value tests
     for (var j in this.test) {
       if (this.test[j] instanceof Function) {
-        value = this.test[j](value, key, this.parent, this);
+        value = (this.test[j] as ParamTest)(value, key, this.parent, this);
       } else if (this.test[j] instanceof Array) {
-        value = this.arrayTest(this.test[j], value);
+        value = this.arrayTest(this.test[j] as any[], value);
       }
     }
   }
 
-  help() {
+  help(): string {
     var help = this.short.length ? '  -' + this.short[0] : '    ';
 
     var last = this.possible.length - 1;
@@ -284,5 +332,5 @@ class GetoptLongParam {
 
 const param = GetoptLongParam;
 
-export { GetoptLongParam, param };
+export { param };
 export default GetoptLongParam;

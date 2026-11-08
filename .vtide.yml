@@ -6,13 +6,13 @@ default:
 editor:
   files:
     param:
-      - src/getopt-long-param.mjs
-      - src/__tests__/param-help.test.mjs
-      - src/__tests__/param.test.mjs
+      - src/getopt-long-param.ts
+      - src/__tests__/param-help.test.ts
+      - src/__tests__/param.test.ts
     opt:
-      - src/getopt-long.mjs
-      - src/__tests__/options-help.test.mjs
-      - src/__tests__/options.test.mjs
+      - src/getopt-long.ts
+      - src/__tests__/options-help.test.ts
+      - src/__tests__/options.test.ts
 name: node-getopt-long
 terminals:
   1:

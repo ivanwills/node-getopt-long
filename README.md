@@ -82,6 +82,33 @@ Full detailed example:
     console.log('arg = ' + options.arg);
 ```
 
+TypeScript
+==========
+
+The package ships with its own type declarations, so it can be used directly
+from TypeScript without any additional `@types` package:
+
+```ts
+import { options, configure, type ParameterList } from 'node-getopt-long';
+
+const parameters: ParameterList = [
+  ['flag|f', 'Flag for something'],
+  ['count|c=i', 'A numeric option'],
+];
+
+const parsed = options(parameters);
+console.log(parsed.flag, parsed.count);
+
+const getopt = configure(parameters, { name: 'scriptname' });
+```
+
+The published JavaScript is still CommonJS, so existing `require()` based code
+continues to work unchanged:
+
+```js
+const { options } = require('node-getopt-long');
+```
+
 Description
 ===========
 

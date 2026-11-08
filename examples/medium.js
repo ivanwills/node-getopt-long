@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const ngl = require('../lib/getopt-long');
+const ngl = require('../index');
 
 const options = ngl.options(
   [
@@ -25,7 +25,7 @@ const options = ngl.options(
       pause: 2,
       retryErrors: false,
     },
-  }
+  },
 );
 
 console.log('Options set:', options);

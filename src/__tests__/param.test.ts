@@ -1,8 +1,9 @@
 import assert from 'node:assert';
-import { GetoptLongParam } from '../getopt-long-param.mjs';
+import { describe, it } from '@jest/globals';
+import { GetoptLongParam } from '../getopt-long-param';
 import _ from 'underscore';
 
-var test_data = [
+var test_data: any[] = [
   {
     'name': 'Simple parameter',
     'args': ['long|l', { description: 'A long named option' }],
@@ -136,7 +137,7 @@ var test_data = [
       'long|l=i',
       {
         description: 'A long option with an integer',
-        test: function(val) {
+        test: function(val: any) {
           if (val < 0) {
             throw '--long must be a positive integer\n';
           }
@@ -199,7 +200,7 @@ var test_data = [
     'args': [
       'long|l=i%',
       {
-        test       : function(value) {
+        test       : function(value: any) {
           if (value < 0) {
             throw 'No negatives\n';
           }
@@ -221,7 +222,7 @@ var test_data = [
     'args': [
       'long|l=i%',
       {
-        test       : function(value, key) {
+        test       : function(value: any, key: any) {
           if (key === 'thing') {
             throw 'No things\n';
           }
@@ -289,13 +290,13 @@ var test_data = [
   }
 ];
 
-_.each(test_data, function(data) {
+_.each(test_data, function(data: any) {
   describe(data.name, function() {
 
     if (data['this']) {
-      _.each(data['this'], function(test) {
+      _.each(data['this'], function(test: any) {
         it('sets ' + test[0], function() {
-          var param, error;
+          var param: any, error: any;
           try {
             param = new GetoptLongParam(data.args);
             error = false;
@@ -309,10 +310,10 @@ _.each(test_data, function(data) {
       });
     }
 
-    _.each(data.data, function(test) {
+    _.each(data.data, function(test: any) {
       var call = '"' + ( test.arg instanceof Array ? test.arg.join(' ') : test.arg ) + '"' + (test.error ? ' fails' : '');
       it('with parameter ' + call, function() {
-        var param, match, error;
+        var param: any, match: any, error: any;
         try {
           param = new GetoptLongParam(data.args);
           if (!(test.arg instanceof Array)) {
@@ -321,7 +322,7 @@ _.each(test_data, function(data) {
 
           match = 0;
           while (test.arg.length) {
-            var nextMatch = param.process.apply(param, test.arg);
+            var nextMatch = param.process(test.arg[0], test.arg[1]);
             if (nextMatch < 0) {
               test.arg[0] = test.arg[0].replace(/^-./, '-');
             }
@@ -371,7 +372,7 @@ _.each(test_data, function(data) {
 
 describe('Argument events', function() {
   it('are called', function() {
-    var flag;
+    var flag: boolean | undefined;
     var param = new GetoptLongParam([
       'long|l!',
       {
@@ -384,7 +385,7 @@ describe('Argument events', function() {
   });
 
   it('are called on arguments', function() {
-    var flag;
+    var flag: boolean | undefined;
     var param = new GetoptLongParam([
       'long|l=i',
       {

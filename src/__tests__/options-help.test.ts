@@ -1,8 +1,9 @@
 import _ from 'underscore';
 import assert from 'node:assert';
-import getoptLong from '../getopt-long.mjs';
+import { afterEach, beforeEach, describe, it } from '@jest/globals';
+import getoptLong from '../getopt-long';
 
-var test_data = [
+var test_data: any[] = [
   {
     name: 'Short config',
     config: [[['long|l', 'Long message']], {}],
@@ -98,29 +99,29 @@ var test_data = [
 ];
 
 describe('Full help', function () {
-  var exit = process.exit,
-    outWrite = process.stdout.write,
-    errWrite = process.stderr.write,
-    exitedWith;
+  var exit: any = process.exit,
+    outWrite: any = process.stdout.write,
+    errWrite: any = process.stderr.write,
+    exitedWith: any;
 
   beforeEach(function () {
     // hack in alt exit method for testing
-    process.exit = function (code) {
+    (process as any).exit = function (code: number) {
       exitedWith = code;
     };
-    process.stdout.write = function () {};
-    process.stderr.write = function () {};
+    (process.stdout as any).write = function () {};
+    (process.stderr as any).write = function () {};
   });
   afterEach(function () {
     // restore real exit
-    process.exit = exit;
-    process.stdout.write = outWrite;
-    process.stderr.write = errWrite;
+    (process as any).exit = exit;
+    (process.stdout as any).write = outWrite;
+    (process.stderr as any).write = errWrite;
   });
 
-  _.each(test_data, function (test) {
+  _.each(test_data, function (test: any) {
     it(test.name, function () {
-      var obj;
+      var obj: any;
       if (test.ARGV) {
         process.argv = test.ARGV;
       } else {
@@ -128,14 +129,14 @@ describe('Full help', function () {
         process.argv.unshift('node', 'test');
       }
       try {
-        obj = getoptLong.configure.apply(this, test.config);
+        obj = getoptLong.configure(test.config[0], test.config[1]);
         obj.process();
       } catch (e) {
         console.log(e);
       }
 
       if (test.parameters) {
-        _.each(test.parameters, function (params, key) {
+        _.each(test.parameters, function (params: any, key: string) {
           assert.equal(
             params,
             obj[key],
@@ -172,22 +173,22 @@ describe('Full help', function () {
 });
 
 describe('Showing version number', function () {
-  var exit, write, txt;
+  var exit: any, write: any, txt: any;
   beforeEach(function () {
     exit = process.exit;
     write = process.stdout.write;
-    process.exit = function () {};
-    process.stdout.write = function (str) {
+    (process as any).exit = function () {};
+    (process.stdout as any).write = function (str: string) {
       txt = str;
     };
   });
   afterEach(function () {
-    process.exit = exit;
-    process.stdout.write = write;
+    (process as any).exit = exit;
+    (process.stdout as any).write = write;
   });
   it('Unsafe config prototype items', function () {
     process.argv = ['node', 'test', '--version'];
-    var opt;
+    var opt: any;
     try {
       opt = getoptLong.configure([['long|l', 'Long message']], {
         name: '~/foo',
@@ -208,17 +209,17 @@ describe('Showing version number', function () {
 
 describe('Help with object prototype extras', function () {
   beforeEach(function () {
-    Array.prototype.junk = true;
-    Object.prototype.junk = true;
+    (Array.prototype as any).junk = true;
+    (Object.prototype as any).junk = true;
   });
   afterEach(function () {
-    delete Array.prototype.junk;
-    delete Object.prototype.junk;
+    delete (Array.prototype as any).junk;
+    delete (Object.prototype as any).junk;
   });
 
   it('Unsafe config prototype items', function () {
     process.argv = ['node', 'test'];
-    var opt;
+    var opt: any;
     try {
       opt = getoptLong.configure([['long|l', 'Long message']], {
         name: '~/foo',
